@@ -1,1 +1,1 @@
-class UserModel {}
+//TODO: create user model to use in firebase

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/constants/constats.dart';
 import 'package:lottie/lottie.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Kurd Store"),
+        title: Text(Constants.appName),
       ),
       body: Center(
         child: Column(

@@ -1,0 +1,1 @@
+//TODO: create a model for product to use in firebase
