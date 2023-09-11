@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "498782722735",
+    "project_id": "kurd-store-krd",
+    "storage_bucket": "kurd-store-krd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498782722735:android:f0120d7b2299750ce5125a",
+        "android_client_info": {
+          "package_name": "krd.ztech.kurd_store"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb7WzU9tNAv6W72kHfWpOof318CrOCYDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
