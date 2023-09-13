@@ -10,9 +10,9 @@ class YousifScreen extends StatefulWidget {
 class _YousifScreenState extends State<YousifScreen> {
   @override
   Widget build(BuildContext context) {
-    return  const Scaffold(backgroundColor: Colors.grey,
-    body: Center(child: Text("mY sCreen")),
-    
+    return const Scaffold(
+      backgroundColor: Colors.green,
+      body: Center(child: Text("mY sCreen")),
     );
   }
 }
