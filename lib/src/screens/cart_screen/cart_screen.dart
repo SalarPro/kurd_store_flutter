@@ -123,7 +123,7 @@ class _CartScreenState extends State<CartScreen> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Image.asset(
-                Assets.assetsImagesClothCloth2,
+                Assets.assetsDummyImagesClothes2,
               ),
             ),
             Padding(

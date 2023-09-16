@@ -29,7 +29,7 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Image.asset(Assets.assetsImagesClothCloth1),
+              child: Image.asset(Assets.assetsDummyImagesClothes1),
             ),
           ),
           Padding(
