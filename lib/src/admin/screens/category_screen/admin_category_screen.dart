@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:kurd_store/src/admin/screens/category_screen/admin_category_edit_screen.dart';
 import 'package:kurd_store/src/admin/screens/category_screen/admin_category_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/screens/home_screen/home_screen.dart';
@@ -45,7 +46,12 @@ class _AdminCategoryScreenState extends State<AdminCategoryScreen> {
                   border:
                       Border.all(color: const Color.fromARGB(122, 0, 0, 0))),
               child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AdminCategoryEditScreen()));
+                  },
                   icon: iconFrameAppBar(Assets.assetsIconsAdd)))
         ],
         leading: Container(
@@ -95,16 +101,24 @@ class _AdminCategoryScreenState extends State<AdminCategoryScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.only(left: 15),
-                  decoration: BoxDecoration(
-                      color: Color.fromARGB(39, 158, 158, 158),
-                      borderRadius: BorderRadius.circular(12)),
-                  height: 170,
-                  width: 140,
-                  child: Image.asset(
-                    Assets.assetsIconsClothesProduct,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AdminCategoryEditScreen()));
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.only(left: 15),
+                    decoration: BoxDecoration(
+                        color: Color(0xffF0F0F0),
+                        borderRadius: BorderRadius.circular(12)),
+                    height: 170,
+                    width: 140,
+                    child: Image.asset(
+                      Assets.assetsIconsClothesProduct,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -120,7 +134,13 @@ class _AdminCategoryScreenState extends State<AdminCategoryScreen> {
                 Column(
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AdminCategoryEditScreen()));
+                      },
                       child: Container(
                         padding: EdgeInsets.all(4),
                         margin: EdgeInsets.only(left: 80, top: 10),
@@ -170,7 +190,7 @@ class _AdminCategoryScreenState extends State<AdminCategoryScreen> {
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.only(left: 15, top: 10),
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(39, 158, 158, 158),
+                      color: Color(0xffF0F0F0),
                       borderRadius: BorderRadius.circular(12)),
                   height: 170,
                   width: 140,
@@ -242,7 +262,7 @@ class _AdminCategoryScreenState extends State<AdminCategoryScreen> {
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.only(left: 15, top: 10),
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(39, 158, 158, 158),
+                      color: Color(0xffF0F0F0),
                       borderRadius: BorderRadius.circular(12)),
                   height: 170,
                   width: 140,

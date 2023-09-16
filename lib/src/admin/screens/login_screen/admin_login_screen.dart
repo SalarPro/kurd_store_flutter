@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/admin/screens/main_screen/admin_main_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
-import 'package:kurd_store/src/helper/ks_widget_omed.dart';
+
 import 'package:kurd_store/src/screens/home_screen/home_screen.dart';
 
 class AdminLoginScreen extends StatefulWidget {
@@ -78,7 +78,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   Widget get emailTextField {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
+          border: Border.all(color: const Color.fromARGB(113, 0, 0, 0)),
           borderRadius: BorderRadius.circular(13)),
       margin: EdgeInsets.all(16),
       child: TextField(
@@ -94,7 +94,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   Widget get passwordTextField {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
+          border: Border.all(color: const Color.fromARGB(115, 0, 0, 0)),
           borderRadius: BorderRadius.circular(13)),
       margin: EdgeInsets.all(16),
       child: TextField(
@@ -119,10 +119,10 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
       },
       child: Center(
         child: Container(
-          height: 70,
+          height: 65,
           width: 170,
           decoration: BoxDecoration(
-              color: Color.fromARGB(163, 49, 49, 49),
+              color: Color.fromARGB(187, 49, 49, 49),
               borderRadius: BorderRadius.circular(20)),
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           child: Row(

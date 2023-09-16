@@ -99,7 +99,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.only(left: 15),
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(39, 158, 158, 158),
+                      color: Color(0xffF0F0F0),
                       borderRadius: BorderRadius.circular(12)),
                   height: 170,
                   width: 140,
@@ -136,7 +136,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.only(left: 15, top: 10),
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(39, 158, 158, 158),
+                      color: Color(0xffF0F0F0),
                       borderRadius: BorderRadius.circular(12)),
                   height: 170,
                   width: 140,
@@ -173,7 +173,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.only(left: 15, top: 10),
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(39, 158, 158, 158),
+                      color: Color(0xffF0F0F0),
                       borderRadius: BorderRadius.circular(12)),
                   height: 170,
                   width: 140,
