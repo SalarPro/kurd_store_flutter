@@ -34,28 +34,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           iconPath: Assets.assetsIconsClothesIcon,
                           // onTap: () {},
                         ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes1,
-                                  price: "30,000"),
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes2,
-                                  price: "15,000"),
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes3,
-                                  price: "200,000"),
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes1,
-                                  price: "22,000"),
-                            ],
-                          ),
+                        SizedBox(
+                          height: 230,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return KSWidget.cardItems(
+                                    itemName: "T-Shirt",
+                                    itemPath: Assets.assetsDummyImagesClothes1,
+                                    price: "30,000");
+                              }),
                         ),
                       ],
                     ),
@@ -164,7 +152,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Positioned(
-            bottom: MediaQuery.of(context).padding.bottom,
+            bottom: MediaQuery.of(context).padding.bottom +
+                ((MediaQuery.of(context).padding.bottom > 0 ? 0 : 15)),
             left: 0,
             right: 0,
             child: NavigationBar(),
