@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/screens/product/product_see_all_screen.dart';
 
@@ -42,19 +41,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesClothCloth1,
+                                      itemPath: Assets.assetsDummyImagesClothes1,
                                       price: "30,000"),
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesClothCloth2,
+                                      itemPath: Assets.assetsDummyImagesClothes2,
                                       price: "15,000"),
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesClothCloth3,
+                                      itemPath: Assets.assetsDummyImagesClothes3,
                                       price: "200,000"),
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesClothCloth4,
+                                      itemPath: Assets.assetsDummyImagesClothes1,
                                       price: "22,000"),
                                 ],
                               ),
@@ -76,19 +75,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesElecElec1,
+                                      itemPath: Assets.assetsDummyImagesClothes1,
                                       price: "30,000"),
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesElecElec2,
+                                      itemPath: Assets.assetsDummyImagesClothes2,
                                       price: "15,000"),
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesElecElec1,
+                                      itemPath: Assets.assetsDummyImagesClothes3,
                                       price: "200,000"),
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesElecElec3,
+                                      itemPath: Assets.assetsDummyImagesClothes1,
                                       price: "22,000"),
                                 ],
                               ),
@@ -110,19 +109,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesClothCloth1,
+                                      itemPath: Assets.assetsDummyImagesClothes1,
                                       price: "30,000"),
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesClothCloth2,
+                                      itemPath: Assets.assetsDummyImagesClothes2,
                                       price: "15,000"),
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesClothCloth3,
+                                      itemPath: Assets.assetsDummyImagesClothes3,
                                       price: "200,000"),
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesClothCloth4,
+                                      itemPath: Assets.assetsDummyImagesClothes1,
                                       price: "22,000"),
                                 ],
                               ),
@@ -144,19 +143,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesClothCloth1,
+                                      itemPath: Assets.assetsDummyImagesClothes1,
                                       price: "30,000"),
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesClothCloth2,
+                                      itemPath: Assets.assetsDummyImagesClothes2,
                                       price: "15,000"),
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesClothCloth3,
+                                      itemPath: Assets.assetsDummyImagesClothes3,
                                       price: "200,000"),
                                   CardItems(
                                       itemName: "T-Shirt",
-                                      itemPath: Assets.assetsImagesClothCloth4,
+                                      itemPath: Assets.assetsDummyImagesClothes1,
                                       price: "22,000"),
                                 ],
                               ),

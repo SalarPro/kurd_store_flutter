@@ -32,7 +32,7 @@ class _SeeAllProductState extends State<SeeAllProduct> {
                   },
                   child: Container(
                     child: CardItems(
-                        itemPath: Assets.assetsImagesClothCloth1,
+                        itemPath: Assets.assetsDummyImagesClothes1,
                         price: '15,000',
                         itemName: 'T-Shirt'),
                   ),
