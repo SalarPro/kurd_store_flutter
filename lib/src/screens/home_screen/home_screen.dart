@@ -13,153 +13,78 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var isNavigationBarVisible = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Kurd Store"),
-        actions: [Icon(Icons.menu)],
+        actions: [
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  isNavigationBarVisible = !isNavigationBarVisible;
+                });
+              },
+              icon: Icon(Icons.menu))
+        ],
       ),
       body: Stack(
         children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                Column(
-                  children: [
-                    Column(
-                      children: [
-                        CategoryTitele(
-                          title: "Clothes",
-                          iconPath: Assets.assetsIconsClothesIcon,
-                          // onTap: () {},
-                        ),
-                        SizedBox(
-                          height: 230,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return KSWidget.cardItems(
-                                    itemName: "T-Shirt",
-                                    itemPath: Assets.assetsDummyImagesClothes1,
-                                    price: "30,000");
-                              }),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        CategoryTitele(
-                          title: "Tech",
-                          iconPath: Assets.assetsIconsElectronicIcon,
-                          // onTap: () {},
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes1,
-                                  price: "30,000"),
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes2,
-                                  price: "15,000"),
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes3,
-                                  price: "200,000"),
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes1,
-                                  price: "22,000"),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        CategoryTitele(
-                          title: "Clothes",
-                          iconPath: Assets.assetsIconsClothesIcon,
-                          // onTap: () {},
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes1,
-                                  price: "30,000"),
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes2,
-                                  price: "15,000"),
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes3,
-                                  price: "200,000"),
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes1,
-                                  price: "22,000"),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        CategoryTitele(
-                          title: "Clothes",
-                          iconPath: Assets.assetsIconsClothesIcon,
-                          // onTap: () {},
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes1,
-                                  price: "30,000"),
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes2,
-                                  price: "15,000"),
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes3,
-                                  price: "200,000"),
-                              KSWidget.cardItems(
-                                  itemName: "T-Shirt",
-                                  itemPath: Assets.assetsDummyImagesClothes1,
-                                  price: "22,000"),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 110,
-                )
-              ],
-            ),
+          Positioned.fill(
+            child: ListView.builder(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).padding.bottom +
+                        ((MediaQuery.of(context).padding.bottom > 0 ? 0 : 15)) +
+                        60),
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return itemRowWithCategory();
+                }),
           ),
-          Positioned(
+          AnimatedPositioned(
+            curve: Curves.easeInOut,
+            duration: Duration(milliseconds: 350),
             bottom: MediaQuery.of(context).padding.bottom +
-                ((MediaQuery.of(context).padding.bottom > 0 ? 0 : 15)),
+                ((MediaQuery.of(context).padding.bottom > 0 ? 0 : 15)) +
+                (isNavigationBarVisible ? 0 : -150),
             left: 0,
             right: 0,
             child: NavigationBar(),
           ),
         ],
       ),
+    );
+  }
+
+  Column itemRowWithCategory() {
+    return Column(
+      children: [
+        CategoryTitele(
+          title: "Clothes",
+          iconPath: Assets.assetsIconsClothesIcon,
+          // onTap: () {},
+        ),
+        SizedBox(
+          height: 200,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return KSWidget.cardItems(
+                  itemName:
+                      "T-Shirt Adidas", //odd even
+                  itemPath: [
+                    Assets.assetsDummyImagesClothes1,
+                    Assets.assetsDummyImagesClothes2,
+                    Assets.assetsDummyImagesClothes3,
+                  ][index % 3],
+                  price: "30,000");
+            },
+          ),
+        ),
+      ],
     );
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kurd_store/src/constants/assets.dart';
-import 'package:kurd_store/src/screens/product/product_view_screen.dart';
+import 'package:kurd_store/src/helper/ks_widget.dart';
 
 class SeeAllProduct extends StatefulWidget {
   const SeeAllProduct({super.key});
@@ -20,23 +20,17 @@ class _SeeAllProductState extends State<SeeAllProduct> {
           child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
+                childAspectRatio: 1,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
               ),
+              padding: EdgeInsets.all(10),
               itemCount: 11,
               itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ProductViewScreen()));
-                  },
-                  child: Container(
-                    child: CardItems(
-                        itemPath: Assets.assetsDummyImagesClothes1,
-                        price: '15,000',
-                        itemName: 'T-Shirt'),
-                  ),
-                );
+                return KSWidget.cardItems2Grid(
+                    itemPath: Assets.assetsDummyImagesClothes1,
+                    price: '15,000',
+                    itemName: 'T-Shirt');
               }),
         ));
   }
@@ -54,7 +48,7 @@ class _SeeAllProductState extends State<SeeAllProduct> {
         children: [
           Row(
             children: [
-              iconFrame(
+              KSWidget.iconFrame(
                 iconPath,
               ),
               Padding(
@@ -79,21 +73,6 @@ class _SeeAllProductState extends State<SeeAllProduct> {
           )
         ],
       ),
-    );
-  }
-
-  Widget iconFrame(
-    String? iconPath,
-  ) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      height: 35,
-      width: 35,
-      decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.black)),
-      child: Image.asset(iconPath!),
     );
   }
 
@@ -128,7 +107,7 @@ class _SeeAllProductState extends State<SeeAllProduct> {
                 // ),
                 Spacer(),
 
-                iconFrame(Assets.assetsIconsFavorite)
+                KSWidget.iconFrame(Assets.assetsIconsFavorite)
               ],
             ),
             SizedBox(
@@ -161,7 +140,7 @@ class _SeeAllProductState extends State<SeeAllProduct> {
                 //   width: 35,
                 // ),
                 Spacer(),
-                iconFrame(Assets.assetsIconsCart)
+                KSWidget.iconFrame(Assets.assetsIconsCart)
               ],
             )
           ],

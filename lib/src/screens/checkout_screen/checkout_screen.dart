@@ -17,25 +17,27 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       appBar: AppBar(
         title: Text("Card Screen"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            kstextfield(title: 'Name', icon: Icons.email),
-            kstextfield(title: 'Phone', icon: Icons.phone),
-            kstextfield(title: 'City', icon: Icons.location_city),
-            kstextfield(title: 'Addres', icon: Icons.location_on),
-            kstextfield(title: 'Note', icon: Icons.note_alt_outlined),
-            Spacer(),
-            rachit(),
-            SizedBox(
-              height: 10,
-            ),
-            navigationBar(),
-            SizedBox(
-              height: 30,
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              kstextfield(title: 'Name', icon: Icons.email),
+              kstextfield(title: 'Phone', icon: Icons.phone),
+              kstextfield(title: 'City', icon: Icons.location_city),
+              kstextfield(title: 'Addres', icon: Icons.location_on),
+              kstextfield(title: 'Note', icon: Icons.note_alt_outlined),
+              // Spacer(),
+              rachit(),
+              SizedBox(
+                height: 10,
+              ),
+              navigationBar(),
+              SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -68,44 +70,45 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   Widget navigationBar(
       // String? iconPath,
       ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 90),
-      child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 15),
-          height: 60,
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.8),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      height: 35,
-                      width: 35,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white),
-                      child: Image.asset(Assets.assetsIconsCartConfirm),
-                    ),
+    return GestureDetector(
+      onTap: () {
+        // TODO: SEND DATA TO SERVER
+      },
+      child: Center(
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    height: 35,
+                    width: 35,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white),
+                    child: Image.asset(Assets.assetsIconsCartConfirm),
                   ),
-                  Text(
-                    "Check Out",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15),
-                  )
-                ],
-              ),
-            ],
-          )),
+                ),
+                Text(
+                  "Check Out",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                )
+              ],
+            )),
+      ),
     );
   }
 

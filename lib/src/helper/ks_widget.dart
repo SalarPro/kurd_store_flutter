@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/screens/product/product_view_screen.dart';
 
 class KSWidget {
   static Widget cardItems({
@@ -8,84 +9,172 @@ class KSWidget {
     required String price,
     required String itemName,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
-      child: AspectRatio(
-        aspectRatio: 0.8,
-        child: Container(
-          padding: EdgeInsets.all(10),
-          height: 185,
-          width: Get.width / 2.5,
-          decoration: BoxDecoration(
-            color: Colors.black12,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image.asset(
-                    itemPath,
-                    height: 100,
-                  ),
-                  // SizedBox(
-                  //   width: 15,
-                  // ),
-                  Spacer(),
-
-                  iconFrame(Assets.assetsIconsFavorite)
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        itemName,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => ProductViewScreen());
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+        child: AspectRatio(
+          aspectRatio: 0.8,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            // height: 185,
+            // width: Get.width / 2.5,
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 25),
+                          child: Image.asset(
+                            itemPath,
+                            // width: Get.width / 4,
+                            // height: Get.width / 4,
+                          ),
                         ),
                       ),
-                      Text(
-                        "$price IQD",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                itemName,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "$price IQD",
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  // SizedBox(
-                  //   width: 35,
-                  // ),
-                  Spacer(),
-                  iconFrame(Assets.assetsIconsCart)
-                ],
-              )
-            ],
+                        iconFrame(Assets.assetsIconsCart)
+                      ],
+                    )
+                  ],
+                ),
+                Positioned(
+                    right: 0,
+                    top: 0,
+                    child: iconFrame(Assets.assetsIconsFavorite, size: 30))
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  static Container iconFrame(
-    String? iconPath,
-  ) {
+  static Widget cardItems2Grid({
+    required String itemPath,
+    required String price,
+    required String itemName,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => ProductViewScreen());
+      },
+      child: Container(
+        height: double.infinity,
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.black12,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 25),
+                      child: Image.asset(
+                        itemPath,
+                        height: 100,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            itemName,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            "$price IQD",
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    iconFrame(Assets.assetsIconsCart)
+                  ],
+                )
+              ],
+            ),
+            Positioned(
+                right: 0,
+                top: 0,
+                child: iconFrame(Assets.assetsIconsFavorite, size: 30))
+          ],
+        ),
+      ),
+    );
+  }
+
+  static Container iconFrame(String? iconPath, {double size = 30}) {
     return Container(
       padding: EdgeInsets.all(5),
-      height: 35,
-      width: 35,
+      height: size,
+      width: size,
       decoration: BoxDecoration(
           color: Colors.white.withOpacity(0),
           borderRadius: BorderRadius.circular(10),
