@@ -1,13 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
-
-// import 'dart:ui_web';
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:kurd_store/src/admin/screens/main_screen/admin_main_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
-
-import 'package:kurd_store/src/screens/home_screen/home_screen.dart';
 
 class AdminLoginScreen extends StatefulWidget {
   const AdminLoginScreen({super.key});

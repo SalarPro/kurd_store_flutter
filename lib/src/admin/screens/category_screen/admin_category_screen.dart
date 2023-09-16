@@ -2,9 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:kurd_store/src/admin/screens/category_screen/admin_category_edit_screen.dart';
-import 'package:kurd_store/src/admin/screens/category_screen/admin_category_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
-import 'package:kurd_store/src/screens/home_screen/home_screen.dart';
 
 class AdminCategoryScreen extends StatefulWidget {
   const AdminCategoryScreen({super.key});
