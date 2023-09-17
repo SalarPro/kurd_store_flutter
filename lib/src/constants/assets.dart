@@ -13,6 +13,14 @@ class Assets {
   /// assets/dummy_images/clothes3.png
   static const String assetsDummyImagesClothes3 = "assets/dummy_images/clothes3.png";
 
+  /// Assets for assetsDummyImagesMinus
+  /// assets/dummy_images/minus.png
+  static const String assetsDummyImagesMinus = "assets/dummy_images/minus.png";
+
+  /// Assets for assetsDummyImagesPlus
+  /// assets/dummy_images/plus.png
+  static const String assetsDummyImagesPlus = "assets/dummy_images/plus.png";
+
   /// Assets for assetsIconsAbout
   /// assets/icons/about.png
   static const String assetsIconsAbout = "assets/icons/about.png";
@@ -89,6 +97,10 @@ class Assets {
   /// assets/icons/email.png
   static const String assetsIconsEmail = "assets/icons/email.png";
 
+  /// Assets for assetsIconsFQ
+  /// assets/icons/FQ.png
+  static const String assetsIconsFQ = "assets/icons/FQ.png";
+
   /// Assets for assetsIconsFavorite
   /// assets/icons/favorite.png
   static const String assetsIconsFavorite = "assets/icons/favorite.png";
@@ -96,10 +108,6 @@ class Assets {
   /// Assets for assetsIconsFillter
   /// assets/icons/fillter.png
   static const String assetsIconsFillter = "assets/icons/fillter.png";
-
-  /// Assets for assetsIconsFq
-  /// assets/icons/fq.png
-  static const String assetsIconsFq = "assets/icons/fq.png";
 
   /// Assets for assetsIconsHidePassword
   /// assets/icons/hide_password.png
@@ -116,6 +124,10 @@ class Assets {
   /// Assets for assetsIconsMenu
   /// assets/icons/menu.png
   static const String assetsIconsMenu = "assets/icons/menu.png";
+
+  /// Assets for assetsIconsMinus
+  /// assets/icons/minus.png
+  static const String assetsIconsMinus = "assets/icons/minus.png";
 
   /// Assets for assetsIconsName
   /// assets/icons/name.png
@@ -144,6 +156,10 @@ class Assets {
   /// Assets for assetsIconsPhone
   /// assets/icons/phone.png
   static const String assetsIconsPhone = "assets/icons/phone.png";
+
+  /// Assets for assetsIconsPlus
+  /// assets/icons/plus.png
+  static const String assetsIconsPlus = "assets/icons/plus.png";
 
   /// Assets for assetsIconsPrice
   /// assets/icons/price.png
