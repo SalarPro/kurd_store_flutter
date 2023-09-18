@@ -1,10 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:kurd_store/src/admin/screens/order_screen/admin_order_view_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
+import 'package:kurd_store/src/screens/drawer_screens/drawer_widget.dart';
 import 'package:kurd_store/src/screens/product/product_see_all_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,31 +13,17 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
 class _HomeScreenState extends State<HomeScreen> {
   var isNavigationBarVisible = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Kurd Store"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                isNavigationBarVisible = !isNavigationBarVisible;
-              });
-            },
-            icon: Icon(Icons.menu),
-          ),
-          IconButton(
-            onPressed: () {
-              Get.to(AdminOrderView());
-            },
-            icon: Icon(Icons.admin_panel_settings),
-          )
-        ],
-      ),
+      key: _scaffoldKey,
+      drawer: MainDrawer(),
+      appBar: appBar(),
       body: Stack(
         children: [
           Positioned.fill(
@@ -190,6 +175,85 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             ],
           )),
+    );
+  }
+
+  appBar() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(70),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 235, 242, 255),
+        ),
+        child: SafeArea(
+          child: Container(
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    _scaffoldKey.currentState?.openDrawer();
+                  },
+                  icon: KSWidget.iconFrame(Assets.assetsIconsMenu, size: 30),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Kurd Store',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'Find anything what you want',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: 40,
+                  height: 40,
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(5),
+                  child: Image.asset(Assets.assetsIconsSearch),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                ),
+                Container(
+                  width: 40,
+                  height: 40,
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: Badge(
+                    textStyle: TextStyle(fontSize: 100),
+                    backgroundColor: Colors.red,
+                    child: InkWell(
+                      child: Image.asset(
+                        Assets.assetsIconsFavorite,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
