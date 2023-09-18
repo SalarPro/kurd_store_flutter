@@ -39,9 +39,8 @@ class _AdminCategoryEditScreenState extends State<AdminCategoryEditScreen> {
               width: 40,
               margin: EdgeInsets.only(right: 20),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  border:
-                      Border.all(color: const Color.fromARGB(122, 0, 0, 0))),
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
               child: IconButton(
                   onPressed: () {},
                   icon: iconFrameAppBar(Assets.assetsIconsAdd)))
@@ -54,7 +53,9 @@ class _AdminCategoryEditScreenState extends State<AdminCategoryEditScreen> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: iconFrameAppBar(Assets.assetsIconsLeftArrow),
+            icon: iconFrameAppBar(
+              Assets.assetsIconsLeftArrow,
+            ),
           ),
         ),
       );
@@ -69,7 +70,10 @@ class _AdminCategoryEditScreenState extends State<AdminCategoryEditScreen> {
               margin: EdgeInsets.only(top: 20),
               height: 280,
               width: 280,
-              child: Image.asset(Assets.assetsIconsSelectImage),
+              child: Image.asset(
+                Assets.assetsIconsSelectImage,
+                scale: 8,
+              ),
               decoration: BoxDecoration(
                   color: Color(0xffF0F0F0),
                   borderRadius: BorderRadius.circular(20)),
@@ -83,6 +87,19 @@ class _AdminCategoryEditScreenState extends State<AdminCategoryEditScreen> {
             height: 15,
           ),
           nameTextField(),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: const Color.fromARGB(96, 0, 0, 0)),
+                borderRadius: BorderRadius.circular(13)),
+            margin: EdgeInsets.all(16),
+            child: TextField(
+              decoration: InputDecoration(
+                  prefixIcon: iconFrame(Assets.assetsIconsName),
+                  hintText: "Catagory Name...",
+                  hintStyle: TextStyle(fontWeight: FontWeight.w400),
+                  border: InputBorder.none),
+            ),
+          ),
           SizedBox(
             height: 90,
           ),
@@ -120,12 +137,12 @@ class _AdminCategoryEditScreenState extends State<AdminCategoryEditScreen> {
     );
   }
 
-  Container iconFrameAppBar(
+  Widget iconFrameAppBar(
     String? iconPath,
   ) {
     return Container(
-      height: 25,
-      width: 25,
+      height: 20,
+      width: 20,
       child: Image.asset(iconPath!),
     );
   }

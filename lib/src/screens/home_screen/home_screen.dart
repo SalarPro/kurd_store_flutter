@@ -1,6 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kurd_store/src/admin/screens/category_screen/admin_category_edit_screen.dart';
+import 'package:kurd_store/src/admin/screens/category_screen/admin_category_screen.dart';
+import 'package:kurd_store/src/admin/screens/order_screen/admin_order_screen.dart';
+import 'package:kurd_store/src/admin/screens/order_screen/admin_order_view_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
 import 'package:kurd_store/src/screens/product/product_see_all_screen.dart';
@@ -22,26 +27,34 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text("Kurd Store"),
         actions: [
           IconButton(
-              onPressed: () {
-                setState(() {
-                  isNavigationBarVisible = !isNavigationBarVisible;
-                });
-              },
-              icon: Icon(Icons.menu))
+            onPressed: () {
+              setState(() {
+                isNavigationBarVisible = !isNavigationBarVisible;
+              });
+            },
+            icon: Icon(Icons.menu),
+          ),
+          IconButton(
+            onPressed: () {
+              Get.to(AdminOrderView());
+            },
+            icon: Icon(Icons.admin_panel_settings),
+          )
         ],
       ),
       body: Stack(
         children: [
           Positioned.fill(
             child: ListView.builder(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).padding.bottom +
-                        ((MediaQuery.of(context).padding.bottom > 0 ? 0 : 15)) +
-                        60),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return itemRowWithCategory();
-                }),
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).padding.bottom +
+                      ((MediaQuery.of(context).padding.bottom > 0 ? 0 : 15)) +
+                      60),
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return itemRowWithCategory();
+              },
+            ),
           ),
           AnimatedPositioned(
             curve: Curves.easeInOut,
@@ -70,11 +83,10 @@ class _HomeScreenState extends State<HomeScreen> {
           height: 200,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 3,
+            itemCount: 5,
             itemBuilder: (context, index) {
               return KSWidget.cardItems(
-                  itemName:
-                      "T-Shirt Adidas", //odd even
+                  itemName: "T-Shirt Adidas", //odd even
                   itemPath: [
                     Assets.assetsDummyImagesClothes1,
                     Assets.assetsDummyImagesClothes2,

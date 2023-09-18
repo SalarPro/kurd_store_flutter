@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/helper/ks_widget.dart';
 import 'package:kurd_store/src/screens/cart_screen/cart_screen.dart';
 
 class ProductViewScreen extends StatefulWidget {
@@ -23,7 +25,9 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
         children: [
           imageView(),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -63,12 +67,11 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
           SizedBox(height: 30),
           itemCounter(),
           SizedBox(height: 40),
-          itemSizes(),
-          SizedBox(height: 25),
+          KSWidget.itemSizes(),
+          SizedBox(height: 30),
           itemColors(),
-          itemColorsV2(),
-          SizedBox(height: 15),
-          addToCartBtn(context)
+          SizedBox(height: 30),
+          addToCartBtn(context),
         ],
       )),
     );
@@ -77,22 +80,25 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
   GestureDetector addToCartBtn(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CartScreen()));
+        Get.to(CartScreen());
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).padding.bottom +
+                ((MediaQuery.of(context).padding.bottom > 0 ? 0 : 15)) +
+                20),
         child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 15),
+            padding: EdgeInsets.symmetric(horizontal: 30),
             height: 60,
-            width: 250,
+            // width: 250,
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.6),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   children: [
@@ -131,46 +137,12 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
       spacing: 4,
       children: [
         colorCell(Colors.red),
-        colorCell(Color.fromARGB(255, 119, 195, 13)),
-        colorCell(Color.fromARGB(255, 96, 77, 243)),
         colorCell(Color.fromARGB(255, 96, 77, 243)),
         colorCell(Color.fromARGB(255, 202, 24, 173)),
-        colorCell(Color.fromARGB(255, 13, 200, 85)),
         colorCell(Color.fromARGB(255, 119, 195, 13)),
         colorCell(Color.fromARGB(255, 96, 77, 243)),
-        colorCell(Color.fromARGB(255, 96, 77, 243)),
-        colorCell(Color.fromARGB(255, 202, 24, 173)),
         colorCell(Color.fromARGB(255, 13, 200, 85)),
       ],
-    );
-  }
-
-  Widget itemColorsV2() {
-    var colors = [
-      Colors.red,
-      Color.fromARGB(255, 119, 195, 13),
-      Color.fromARGB(255, 96, 77, 243),
-      Color.fromARGB(255, 96, 77, 243),
-      Color.fromARGB(255, 202, 24, 173),
-      Color.fromARGB(255, 13, 200, 85),
-      Color.fromARGB(255, 119, 195, 13),
-      Color.fromARGB(255, 96, 77, 243),
-      Color.fromARGB(255, 96, 77, 243),
-      Color.fromARGB(255, 202, 24, 173),
-      Color.fromARGB(255, 13, 200, 85),
-    ];
-
-    return SizedBox(
-      height: 45,
-      child: ListView.builder(
-          itemCount: colors.length,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (_, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3),
-              child: Center(child: colorCell(colors[index])),
-            );
-          }),
     );
   }
 
@@ -188,70 +160,6 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
     );
   }
 
-  Row itemSizes() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Container(
-            // height: 40,
-            // width: 40,
-            padding: EdgeInsets.all(6),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.amber.withOpacity(0),
-              border: Border.all(color: Colors.black),
-            ),
-            child: Text(
-              '250 GB',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Container(
-            height: 40,
-            width: 40,
-            padding: EdgeInsets.all(3),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.amber.withOpacity(0),
-              border: Border.all(color: Colors.red),
-            ),
-            child: Text(
-              'S',
-              style: TextStyle(
-                  fontSize: 22, fontWeight: FontWeight.bold, color: Colors.red),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Container(
-            height: 40,
-            width: 40,
-            padding: EdgeInsets.all(3),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.amber.withOpacity(0),
-              border: Border.all(color: Colors.black),
-            ),
-            child: Text(
-              'M',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Padding itemCounter() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -259,19 +167,21 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            alignment: Alignment.center,
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.amber.withOpacity(0),
-              border: Border.all(color: Colors.black),
-            ),
-            child: Text(
-              '-',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+                alignment: Alignment.center,
+                height: 35,
+                width: 35,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.amber.withOpacity(0),
+                  border: Border.all(color: Colors.black),
+                ),
+                child: Image.asset(
+                  Assets.assetsDummyImagesMinus,
+                  scale: 12,
+                )),
           ),
           SizedBox(
             width: 20,
@@ -283,19 +193,27 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
           SizedBox(
             width: 20,
           ),
-          Container(
-            alignment: Alignment.center,
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.amber.withOpacity(0),
-              border: Border.all(color: Colors.black),
-            ),
-            child: Text(
-              '+',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
+          GestureDetector(
+            onTap: () {
+              Get.snackbar(
+                'Hello',
+                'message',
+              );
+              // Get.defaultDialog(title: 'hello diyalog');
+            },
+            child: Container(
+                alignment: Alignment.center,
+                height: 35,
+                width: 35,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.amber.withOpacity(0),
+                  border: Border.all(color: Colors.black),
+                ),
+                child: Image.asset(
+                  Assets.assetsDummyImagesPlus,
+                  scale: 12,
+                )),
           ),
         ],
       ),
