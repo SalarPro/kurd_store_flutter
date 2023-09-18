@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kurd_store/src/admin/screens/products_screen/admin_product_edit_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/helper/ks_widget.dart';
 
 class AdminProductScreen extends StatefulWidget {
   const AdminProductScreen({super.key});
@@ -15,17 +18,27 @@ class _AdminProductScreenState extends State<AdminProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            appBar(),
-            kstextfield(title: 'Search', icon: Icons.search),
-            CartCheckOut(
-                name: 'T-Shirt', images: Assets.assetsDummyImagesClothes1),
-            CartCheckOut(
-                name: 'Jlket Bchika', images: Assets.assetsDummyImagesClothes2),
-            CartCheckOut(
-                name: 'Qamis', images: Assets.assetsDummyImagesClothes3),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              appBar(),
+              kstextfield(title: 'Search', icon: Icons.search),
+              CartCheckOut(
+                  name: 'T-Shirt', images: Assets.assetsDummyImagesClothes1),
+              CartCheckOut(
+                  name: 'Jlket Bchika',
+                  images: Assets.assetsDummyImagesClothes2),
+              CartCheckOut(
+                  name: 'Qamis', images: Assets.assetsDummyImagesClothes3),
+              CartCheckOut(
+                  name: 'T-Shirt', images: Assets.assetsDummyImagesClothes1),
+              CartCheckOut(
+                  name: 'Jlket Bchika',
+                  images: Assets.assetsDummyImagesClothes2),
+              CartCheckOut(
+                  name: 'Qamis', images: Assets.assetsDummyImagesClothes3),
+            ],
+          ),
         ),
       ),
     );
@@ -33,85 +46,65 @@ class _AdminProductScreenState extends State<AdminProductScreen> {
 
   //// AppBar
   Widget appBar() {
-    return Positioned(
-      top: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        padding: EdgeInsets.only(top: 20),
-        color: Colors.white,
-        child: Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Container(
-                width: 40,
-                height: 40,
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(5),
-                child: Image.asset(Assets.assetsIconsLeftArrow),
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey),
-                ),
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Kurd Store',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    'Niwar Admin',
-                    style: TextStyle(fontSize: 14, color: Colors.grey[400]),
-                  ),
-                ),
-              ],
-            ),
-            Spacer(),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AdminProductScreen()));
-              },
-              child: Container(
-                width: 40,
-                height: 40,
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(5),
-                child: Image.asset(Assets.assetsIconsFillter),
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey),
-                ),
-              ),
-            ),
-            Container(
+    return Container(
+      padding: EdgeInsets.only(top: 20),
+      color: Colors.white,
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Container(
               width: 40,
               height: 40,
               margin: EdgeInsets.all(10),
               padding: EdgeInsets.all(5),
+              child: Image.asset(Assets.assetsIconsLeftArrow),
               decoration: BoxDecoration(
                 color: Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: Colors.grey),
               ),
-              child: Image.asset(
-                Assets.assetsIconsAdd,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Products',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Text(
+                  'Niwar Admin',
+                  style: TextStyle(fontSize: 14, color: Colors.grey[400]),
+                ),
+              ),
+            ],
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              width: 40,
+              height: 40,
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(5),
+              child: Image.asset(Assets.assetsIconsFillter),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey),
               ),
             ),
-          ],
-        ),
+          ),
+          KSWidget.iconFrame(Assets.assetsIconsAdd, size: 40, onTap: () {
+            Get.to(() => AdminProductEditScreen());
+          }),
+          const SizedBox(width: 10),
+        ],
       ),
     );
   }
@@ -197,16 +190,10 @@ class _AdminProductScreenState extends State<AdminProductScreen> {
                     child: Image.asset(Assets.assetsIconsRemove),
                   ),
                   SizedBox(height: 80),
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    height: 35,
-                    width: 35,
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.black)),
-                    child: Image.asset(Assets.assetsIconsAdd),
-                  ),
+                  KSWidget.iconFrame(Assets.assetsIconsAdd, size: 35,
+                      onTap: () {
+                    Get.to(() => AdminProductEditScreen());
+                  }),
                 ],
               ),
             ],

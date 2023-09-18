@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kurd_store/src/admin/screens/category_screen/admin_category_screen.dart';
+import 'package:kurd_store/src/admin/screens/order_screen/admin_order_screen.dart';
+import 'package:kurd_store/src/admin/screens/products_screen/admin_product_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_text_style.dart';
 
@@ -115,7 +118,9 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
 
   GestureDetector mainCellOrder() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Get.to(() => AdminOrderScreen());
+      },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -149,7 +154,9 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
 
   GestureDetector mainCellProduct() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Get.to(() => AdminProductScreen());
+      },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/admin/screens/login_screen/admin_login_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
-import 'package:kurd_store/src/screens/drawer_screens/fq_scree.dart';
 
 class MainDrawer extends StatefulWidget {
   const MainDrawer({super.key});
@@ -140,10 +139,7 @@ class _MainDrawerState extends State<MainDrawer> {
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
                   ),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => FqScreen()));
-                  },
+                  onTap: () {},
                 ),
                 SizedBox(height: 50),
                 ListTile(

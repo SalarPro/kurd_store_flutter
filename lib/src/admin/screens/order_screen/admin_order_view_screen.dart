@@ -1,16 +1,14 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
 
-class AdminOrderView extends StatefulWidget {
-  const AdminOrderView({super.key});
+class AdminOrderViewScreen extends StatefulWidget {
+  const AdminOrderViewScreen({super.key});
 
   @override
-  State<AdminOrderView> createState() => _AdminOrderViewState();
+  State<AdminOrderViewScreen> createState() => _AdminOrderViewScreenState();
 }
 
-class _AdminOrderViewState extends State<AdminOrderView> {
+class _AdminOrderViewScreenState extends State<AdminOrderViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,102 +28,52 @@ class _AdminOrderViewState extends State<AdminOrderView> {
                 decoration: BoxDecoration(
                     color: Colors.black12,
                     borderRadius: BorderRadius.circular(15)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Column(
                   children: [
-                    section1(
-                        a: 'Products: ',
-                        b: 'Quantity: ',
-                        c: 'Total: ',
-                        d: 'City: ',
-                        e: 'Name: ',
-                        f: 'Date: ',
-                        g: 'Phone: '),
-                    section1(
-                        a: '2',
-                        b: '4',
-                        c: '60.000 IQD',
-                        d: 'Duhok',
-                        e: 'Niwar',
-                        f: '2023/09/12 05:32 pm',
-                        g: '+964 750 475 0434'),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        section1(a: "#123456789"),
-                        Text(
-                          'Pending',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 10),
-                        ),
-                      ],
-                    ),
+                    rowTitleValue("ID", "#5645641"),
+                    rowTitleValue("Products", "2"),
+                    rowTitleValue("Quantity", "4"),
+                    rowTitleValue("Total", "60,000 IQD"),
+                    rowTitleValue("City", "Duhok"),
+                    rowTitleValue("Name", "Niwar"),
+                    rowTitleValue("Date", "2023/09/12 05/;32 pm"),
+                    rowTitleValue("Phone", "+964 750 475 0434"),
+                    rowTitleValue("Statuses", "Pending"),
                   ],
                 ),
               ),
             ),
             KSWidget.rachit(),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            KSWidget.checkOutBtn(),
+            KSWidget.adminChangeOrderStateBtn(),
+            const SizedBox(
+              height: 15,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Column section1({
-    String? a,
-    b,
-    c,
-    d,
-    e,
-    f,
-    g,
-  }) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
+  rowTitleValue(String title, String value) {
+    return Row(
       children: [
-        Text(
-          // 'Products'
-          a ?? '',
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+        Expanded(
+          flex: 1,
+          child: Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+          ),
         ),
-        Text(
-          // 'Quantity'
-          b ?? '',
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-        ),
-        Text(
-          c ?? ''
-          // 'Total'
-          ,
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-        ),
-        Text(
-          // 'City'
-          d ?? '',
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-        ),
-        Text(
-          // 'Name'
-          e ?? '',
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-        ),
-        Text(
-          // 'Date'
-          f ?? '',
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-        ),
-        Text(
-          // 'Phone'
-          g ?? '',
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-        ),
+        Expanded(
+          flex: 3,
+          child: Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+          ),
+        )
       ],
     );
   }

@@ -204,56 +204,32 @@ class KSWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Container(
-            // min dvet Size hami ek bn agar Text drej bo shni aw drej bbit
-            padding: EdgeInsets.all(6),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.amber.withOpacity(0),
-              border: Border.all(color: Colors.black),
-            ),
-            child: Text(
-              'S',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Container(
-            padding: EdgeInsets.all(6),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.amber.withOpacity(0),
-              border: Border.all(color: Colors.black),
-            ),
-            child: Text(
-              'L',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Container(
-            padding: EdgeInsets.all(6),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.amber.withOpacity(0),
-              border: Border.all(color: Colors.black),
-            ),
-            child: Text(
-              'XL',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
+        sizeCell("S"),
+        sizeCell("M"),
+        sizeCell("L"),
+        sizeCell("XL"),
+        sizeCell("XLL"),
       ],
+    );
+  }
+
+  static Padding sizeCell(String sizeString) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        constraints: const BoxConstraints(minWidth: 35),
+        padding: const EdgeInsets.all(6),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.amber.withOpacity(0),
+          border: Border.all(color: Colors.black),
+        ),
+        child: Text(
+          sizeString,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 
@@ -536,6 +512,58 @@ class KSWidget {
                 )
               ],
             )),
+      ),
+    );
+  }
+
+  static Widget adminChangeOrderStateBtn(){
+    return  Container(
+      width: Get.width / 1.5,
+      height: 50,
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    "Change",
+                    style: KSTextStyle.light(14),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+              left: 0,
+              top: 0,
+              bottom: 0,
+              child: Container(
+                width: Get.width / 2.1,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Center(
+                  child: Text(
+                    "Pending",
+                    style: KSTextStyle.light(20),
+                  ),
+                ),
+              ))
+        ],
       ),
     );
   }

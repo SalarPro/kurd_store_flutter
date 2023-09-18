@@ -1,80 +1,50 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/admin/screens/order_screen/admin_order_view_screen.dart';
+import 'package:kurd_store/src/admin/screens/products_screen/admin_product_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
-import 'package:kurd_store/src/helper/ks_widget.dart';
 
-class AdminProductEditScreen extends StatefulWidget {
-  const AdminProductEditScreen({super.key});
+class AdminOrderScreen extends StatefulWidget {
+  const AdminOrderScreen({super.key});
 
   @override
-  State<AdminProductEditScreen> createState() => _AdminProductEditScreenState();
+  State<AdminOrderScreen> createState() => _AdminOrderScreenState();
 }
 
-class _AdminProductEditScreenState extends State<AdminProductEditScreen> {
+final GlobalKey<ScaffoldState> _key = GlobalKey();
+
+class _AdminOrderScreenState extends State<AdminOrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Card Screen"),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).padding.bottom +
-                  ((MediaQuery.of(context).padding.bottom > 0 ? 0 : 15)) +
-                  60),
-          child: Column(
-            children: [
-              imageSelect(),
-              selectImageBTN(),
-              kstextfield(title: 'Name', icon: Icons.text_fields_rounded),
-              kstextfield(
-                  title: 'Description', icon: Icons.description_outlined),
-              kstextfield(title: 'Price', icon: Icons.price_change_rounded),
-              kstextfield(
-                  title: 'Discount Price', icon: Icons.price_change_rounded),
-              SizedBox(
-                height: 10,
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 75),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      kstextfield(title: 'Search', icon: Icons.search),
+                      const SizedBox(height: 20),
+                      rachitPending(),
+                      const SizedBox(height: 20),
+                      rachitPreparing(),
+                      const SizedBox(height: 20),
+                      rachitDelivering(),
+                      const SizedBox(height: 20),
+                      rachitCompleted(),
+                    ],
+                  ),
+                ),
               ),
-              SizedBox(
-                height: 30,
-              ),
-              itemColors(),
-              Divider(),
-              SizedBox(
-                height: 30,
-              ),
-              KSWidget.itemSizes(),
-              SizedBox(
-                height: 30,
-              ),
-              DropdownMenuExample(),
-              SizedBox(
-                height: 30,
-              ),
-              navigationBar(),
-            ],
+            ),
           ),
-        ),
+          appBar()
+        ],
       ),
-    );
-  }
-
-  Widget imageSelect() {
-    return Container(
-      height: 250,
-      width: 250,
-      decoration: BoxDecoration(
-          color: Color.fromARGB(67, 139, 139, 139),
-          borderRadius: BorderRadius.circular(15)),
-      child: Center(
-          child: Image.asset(
-        Assets.assetsIconsSelectImage,
-        scale: 5,
-      )),
     );
   }
 
@@ -87,7 +57,7 @@ class _AdminProductEditScreenState extends State<AdminProductEditScreen> {
       child: Container(
         height: 50,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: TextField(
             decoration: InputDecoration(
               label: Text(title),
@@ -102,118 +72,212 @@ class _AdminProductEditScreenState extends State<AdminProductEditScreen> {
     );
   }
 
-  Widget navigationBar(
-      // String? iconPath,
-      ) {
+  Widget rachitPending() {
     return GestureDetector(
       onTap: () {
-        // TODO: SEND DATA TO SERVER
-        Get.to(AdminOrderView());
+        Get.to(() => AdminOrderViewScreen());
       },
-      child: Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            child: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    height: 35,
-                    width: 35,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white),
-                    child: Image.asset(Assets.assetsIconsSave),
-                  ),
-                ),
-                Text(
-                  "Save",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15),
-                )
-              ],
-            )),
-      ),
-    );
-  }
-
-  Widget selectImageBTN(
-      // String? iconPath,
-      ) {
-    return GestureDetector(
-      onTap: () {
-        // TODO: SEND DATA TO SERVER
-      },
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      height: 35,
-                      width: 35,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white),
-                      child: Image.asset(Assets.assetsIconsSelectImage),
-                    ),
-                  ),
-                  Text(
-                    "Select Image",
-                    style: TextStyle(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Products',
+                      style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 15),
-                  )
-                ],
-              )),
+                        fontSize: 15,
+                      ),
+                    ),
+                    Text(
+                      '2',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Text(
+                      '#12654A',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Quantity ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 70),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        '4',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Total',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 30),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        '60,000 IQD',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'City',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 35),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        'Duhok',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Name',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 22),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        'Niwar',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Phone',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 18),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        '+964 750 475 4834',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Pending',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget rachit(
-      // String? iconPath,
-      ) {
+  ////rachit Preparing
+
+  Widget rachitPreparing() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        // height: 200,
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.8),
           borderRadius: BorderRadius.circular(25),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Products',
@@ -223,11 +287,16 @@ class _AdminProductEditScreenState extends State<AdminProductEditScreen> {
                       fontSize: 15,
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 200,
-                  // ),
                   Text(
-                    '100,000 IQD',
+                    '2',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    '#12654A',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -237,30 +306,31 @@ class _AdminProductEditScreenState extends State<AdminProductEditScreen> {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Discount',
+                    'Quantity ',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
                     ),
                   ),
-                  Text(
-                    '40,000 IQD',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
+                  Padding(
+                    padding: EdgeInsets.only(left: 70),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      '4',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
                     ),
                   ),
                 ],
               ),
-              Divider(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -271,11 +341,148 @@ class _AdminProductEditScreenState extends State<AdminProductEditScreen> {
                       fontSize: 15,
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 200,
-                  // ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 30),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      '60,000 IQD',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
                   Text(
-                    '60,000 IQD',
+                    'City',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 35),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      'Duhok',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Name',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 22),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      'Niwar',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Phone',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 18),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      '+964 750 475 4834',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Preparing',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  //rachit Delivering
+
+  Widget rachitDelivering() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Products',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    '2',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    '#12654A',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -284,6 +491,141 @@ class _AdminProductEditScreenState extends State<AdminProductEditScreen> {
                   ),
                 ],
               ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Quantity ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 70),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      '4',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Total',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 30),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      '60,000 IQD',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'City',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 35),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      'Duhok',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Name',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 22),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      'Niwar',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Phone',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 18),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      '+964 750 475 4834',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Preparing',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),
@@ -291,40 +633,271 @@ class _AdminProductEditScreenState extends State<AdminProductEditScreen> {
     );
   }
 
-  Widget itemColors() {
-    return Wrap(
-      alignment: WrapAlignment.center,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      runSpacing: 4,
-      spacing: 4,
-      children: [
-        colorCell(Colors.red),
-        colorCell(Color.fromARGB(255, 96, 77, 243)),
-        colorCell(Color.fromARGB(255, 202, 24, 173)),
-        colorCell(Color.fromARGB(255, 119, 195, 13)),
-        colorCell(Color.fromARGB(255, 96, 77, 243)),
-        colorCell(Color.fromARGB(255, 13, 200, 85)),
-        SizedBox(
-          width: 25,
+  Widget rachitCompleted() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(25),
         ),
-        GestureDetector(
-          onTap: () {},
-          child: KSWidget.iconFrame(Assets.assetsDummyImagesPlus, size: 25),
-        )
-      ],
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Products',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    '2',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    '#12654A',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Quantity ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 70),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      '4',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Total',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 30),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      '60,000 IQD',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'City',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 35),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      'Duhok',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Name',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 22),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      'Niwar',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Phone',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 18),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      '+964 750 475 4834',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Preparing',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  Widget colorCell(Color color) {
-    return Container(
-      height: 30,
-      width: 30,
-      padding: EdgeInsets.all(3),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: color.withOpacity(1),
-        border: Border.all(color: Colors.white54, width: 3),
+  //// AppBar
+  Widget appBar() {
+    return Positioned(
+      top: 0,
+      left: 0,
+      right: 0,
+      child: Container(
+        padding: EdgeInsets.only(top: 20),
+        color: Colors.white,
+        child: Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Container(
+                width: 40,
+                height: 40,
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(5),
+                child: Image.asset(Assets.assetsIconsLeftArrow),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey),
+                ),
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Orders',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    'Niwar Admin',
+                    style: TextStyle(fontSize: 14, color: Colors.grey[400]),
+                  ),
+                ),
+              ],
+            ),
+            Spacer(),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AdminProductScreen()));
+              },
+              child: Container(
+                width: 40,
+                height: 40,
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(5),
+                child: Image.asset(Assets.assetsIconsFillter),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey),
+                ),
+              ),
+            ),
+            Container(
+              width: 40,
+              height: 40,
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey),
+              ),
+              child: Image.asset(
+                Assets.assetsIconsAdd,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
