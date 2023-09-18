@@ -1,10 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:kurd_store/src/constants/assets.dart';
-import 'package:kurd_store/src/helper/ks_text_style.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
-import 'package:kurd_store/src/screens/checkout_screen/checkout_screen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});

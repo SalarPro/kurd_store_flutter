@@ -2,9 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kurd_store/src/admin/screens/category_screen/admin_category_edit_screen.dart';
-import 'package:kurd_store/src/admin/screens/category_screen/admin_category_screen.dart';
-import 'package:kurd_store/src/admin/screens/order_screen/admin_order_screen.dart';
 import 'package:kurd_store/src/admin/screens/order_screen/admin_order_view_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';

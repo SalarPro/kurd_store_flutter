@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kurd_store/src/constants/assets.dart';
 
 class FqScreen extends StatefulWidget {
   const FqScreen({super.key});
