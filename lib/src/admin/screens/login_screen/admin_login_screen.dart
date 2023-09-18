@@ -1,6 +1,9 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:kurd_store/src/admin/screens/main_screen/admin_main_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/helper/ks_text_style.dart';
 
 class AdminLoginScreen extends StatefulWidget {
   const AdminLoginScreen({super.key});
@@ -21,7 +24,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   get _appBar => AppBar(
       title: Text(
         "Kurd Store",
-        style: TextStyle(fontWeight: FontWeight.bold),
+        style: KSTextStyle.bold(24, fontFamily: "roboto"),
       ),
       actions: [
         Container(
@@ -52,7 +55,8 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
         Center(
           child: Text(
             "Welcome Admin",
-            style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            style: KSTextStyle.bold(40,
+                fontWeight: FontWeight.bold, fontFamily: "roboto"),
           ),
         ),
         SizedBox(
@@ -78,7 +82,8 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
         decoration: InputDecoration(
             prefixIcon: iconFrame(Assets.assetsIconsEmail),
             hintText: "Email",
-            hintStyle: TextStyle(fontWeight: FontWeight.w400),
+            hintStyle: KSTextStyle.bold(14,
+                fontWeight: FontWeight.w400, fontFamily: "roboto"),
             border: InputBorder.none),
       ),
     );
@@ -96,9 +101,8 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
             prefixIcon: iconFrame(Assets.assetsIconsPassword),
             suffixIcon: iconFrame(Assets.assetsIconsHidePassword),
             hintText: "Password",
-            hintStyle: TextStyle(
-              fontWeight: FontWeight.w400,
-            ),
+            hintStyle: KSTextStyle.bold(14,
+                fontWeight: FontWeight.w400, fontFamily: "roboto"),
             border: InputBorder.none),
       ),
     );
@@ -139,11 +143,9 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
               ),
               Text(
                 "LOGIN",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white),
-              )
+                style: KSTextStyle.light(20,
+                    fontWeight: FontWeight.bold, fontFamily: "roboto"),
+              ),
             ],
           ),
         ),
