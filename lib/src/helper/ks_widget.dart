@@ -172,16 +172,30 @@ class KSWidget {
     );
   }
 
-  static Container iconFrame(String? iconPath, {double size = 30}) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      height: size,
-      width: size,
-      decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.black)),
-      child: Image.asset(iconPath!),
+  static Widget iconFrame(String? iconPath,
+      {double size = 30,
+      bool hasBorder = true,
+      EdgeInsets? padding,
+      EdgeInsets? margin,
+      Function()? onTap,
+      Color? color}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: padding ?? EdgeInsets.all(5),
+        margin: margin,
+        height: size,
+        width: size,
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0),
+            borderRadius: BorderRadius.circular(10),
+            border:
+                hasBorder ? Border.all(color: color ?? Colors.black) : null),
+        child: Image.asset(
+          iconPath!,
+          color: color,
+        ),
+      ),
     );
   }
 
