@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:kurd_store/src/admin/screens/category_screen/admin_category_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/helper/ks_text_style.dart';
 
 class AdminMainScreen extends StatefulWidget {
   const AdminMainScreen({super.key});
@@ -24,14 +25,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
         title: Column(children: [
           Text(
             "Kurd Store",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: KSTextStyle.bold(24, fontFamily: "roboto"),
           ),
           Text(
             "Admin Name",
-            style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff8F8F8F)),
+            style: KSTextStyle.bold(17,
+                fontWeight: FontWeight.w400, fontFamily: "roboto"),
           ),
         ]),
         actions: [
@@ -77,48 +76,15 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
               decoration: InputDecoration(
                   prefixIcon: iconFrame(Assets.assetsIconsSearch),
                   hintText: "Search...",
-                  hintStyle: TextStyle(fontWeight: FontWeight.w400),
+                  hintStyle: KSTextStyle.bold(15,
+                      fontWeight: FontWeight.w400, fontFamily: "roboto"),
                   border: InputBorder.none),
             ),
           ),
           SizedBox(
             height: 10,
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AdminCategoryScreen()));
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.only(left: 15),
-                  decoration: BoxDecoration(
-                      color: Color(0xffF0F0F0),
-                      borderRadius: BorderRadius.circular(12)),
-                  height: 170,
-                  width: 140,
-                  child: Image.asset(
-                    Assets.assetsIconsCatagory,
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 15),
-                  child: Text(
-                    "Category",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          mainCellCategory(),
           SizedBox(
             height: 15,
           ),
@@ -126,36 +92,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
             thickness: 1,
             color: const Color.fromARGB(61, 0, 0, 0),
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.only(left: 15, top: 10),
-                  decoration: BoxDecoration(
-                      color: Color(0xffF0F0F0),
-                      borderRadius: BorderRadius.circular(12)),
-                  height: 170,
-                  width: 140,
-                  child: Image.asset(
-                    Assets.assetsIconsProduct,
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 25),
-                  child: Text(
-                    "Product",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          mainCellProduct(),
           SizedBox(
             height: 15,
           ),
@@ -163,42 +100,118 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
             thickness: 1,
             color: const Color.fromARGB(61, 0, 0, 0),
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.only(left: 15, top: 10),
-                  decoration: BoxDecoration(
-                      color: Color(0xffF0F0F0),
-                      borderRadius: BorderRadius.circular(12)),
-                  height: 170,
-                  width: 140,
-                  child: Image.asset(
-                    Assets.assetsIconsOrder,
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 25),
-                  child: Text(
-                    "Order",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          mainCellOrder(),
           SizedBox(
             height: 15,
           ),
           Divider(
             thickness: 1,
             color: const Color.fromARGB(61, 0, 0, 0),
+          ),
+        ],
+      ),
+    );
+  }
+
+  GestureDetector mainCellOrder() {
+    return GestureDetector(
+      onTap: () {},
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.only(left: 15, top: 10),
+            decoration: BoxDecoration(
+                color: Color(0xffF0F0F0),
+                borderRadius: BorderRadius.circular(12)),
+            height: 170,
+            width: 140,
+            child: Image.asset(
+              Assets.assetsIconsOrder,
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 25),
+            child: Text(
+              "Order",
+              style: KSTextStyle.bold(18,
+                  fontWeight: FontWeight.w700, fontFamily: "roboto"),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  GestureDetector mainCellProduct() {
+    return GestureDetector(
+      onTap: () {},
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.only(left: 15, top: 10),
+            decoration: BoxDecoration(
+                color: Color(0xffF0F0F0),
+                borderRadius: BorderRadius.circular(12)),
+            height: 170,
+            width: 140,
+            child: Image.asset(
+              Assets.assetsIconsProduct,
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 25),
+            child: Text(
+              "Product",
+              style: KSTextStyle.bold(18,
+                  fontWeight: FontWeight.w700, fontFamily: "roboto"),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  GestureDetector mainCellCategory() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => AdminCategoryScreen()));
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.only(left: 15),
+            decoration: BoxDecoration(
+                color: Color(0xffF0F0F0),
+                borderRadius: BorderRadius.circular(12)),
+            height: 170,
+            width: 140,
+            child: Image.asset(
+              Assets.assetsIconsCatagory,
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 15),
+            child: Text(
+              "Category",
+              style: KSTextStyle.bold(18,
+                  fontWeight: FontWeight.w700, fontFamily: "roboto"),
+            ),
           ),
         ],
       ),
