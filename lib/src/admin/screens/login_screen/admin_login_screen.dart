@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kurd_store/src/admin/screens/main_screen/admin_main_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_text_style.dart';
+import 'package:kurd_store/src/helper/ks_widget.dart';
 
 class AdminLoginScreen extends StatefulWidget {
   const AdminLoginScreen({super.key});
@@ -13,6 +15,8 @@ class AdminLoginScreen extends StatefulWidget {
 }
 
 class _AdminLoginScreenState extends State<AdminLoginScreen> {
+  bool isPasswordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,24 +31,13 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
         style: KSTextStyle.bold(24, fontFamily: "roboto"),
       ),
       actions: [
-        Container(
-            height: 40,
-            width: 40,
-            margin: EdgeInsets.only(right: 20),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-                border: Border.all(color: Color.fromARGB(101, 14, 1, 1))),
-            child: IconButton(
-                onPressed: () {},
-                icon: iconFrameAppBar(Assets.assetsIconsUser)))
+        KSWidget.iconFrame(Assets.assetsIconsUser,
+            size: 35, onTap: () {}, margin: EdgeInsets.all(8))
       ],
-      leading: Container(
-        margin: EdgeInsets.all(5),
-        child: IconButton(
-          onPressed: () {},
-          icon: iconFrameAppBar(Assets.assetsIconsLeftArrow),
-        ),
-      ));
+      leading:
+          KSWidget.iconFrame(Assets.assetsIconsLeftArrow, size: 35, onTap: () {
+        Get.back();
+      }, margin: EdgeInsets.all(8), padding: EdgeInsets.all(8)));
 
   Widget get _body {
     return (SingleChildScrollView(
@@ -80,7 +73,8 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
       margin: EdgeInsets.all(16),
       child: TextField(
         decoration: InputDecoration(
-            prefixIcon: iconFrame(Assets.assetsIconsEmail),
+            prefixIcon: KSWidget.iconFrame(Assets.assetsIconsEmail,
+                hasBorder: false, padding: EdgeInsets.all(10)),
             hintText: "Email",
             hintStyle: KSTextStyle.bold(14,
                 fontWeight: FontWeight.w400, fontFamily: "roboto"),
@@ -96,10 +90,24 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
           borderRadius: BorderRadius.circular(13)),
       margin: EdgeInsets.all(16),
       child: TextField(
-        obscureText: true,
+        obscureText: !isPasswordVisible,
         decoration: InputDecoration(
-            prefixIcon: iconFrame(Assets.assetsIconsPassword),
-            suffixIcon: iconFrame(Assets.assetsIconsHidePassword),
+            prefixIcon: KSWidget.iconFrame(Assets.assetsIconsPassword,
+                size: 18, hasBorder: false, padding: EdgeInsets.all(10)),
+            suffixIcon: KSWidget.iconFrame(
+              Assets.assetsIconsHidePassword,
+              size: 18,
+              hasBorder: false,
+              padding: EdgeInsets.all(10),
+              onTap: () {
+                setState(
+                  () {
+                    isPasswordVisible = !isPasswordVisible;
+                  },
+                );
+              },
+              color: isPasswordVisible ? Colors.red : null,
+            ),
             hintText: "Password",
             hintStyle: KSTextStyle.bold(14,
                 fontWeight: FontWeight.w400, fontFamily: "roboto"),
@@ -150,27 +158,6 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Container iconFrame(
-    String? iconPath,
-  ) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      height: 20,
-      width: 20,
-      child: Image.asset(iconPath!),
-    );
-  }
-
-  Container iconFrameAppBar(
-    String? iconPath,
-  ) {
-    return Container(
-      height: 25,
-      width: 25,
-      child: Image.asset(iconPath!),
     );
   }
 }
