@@ -13,6 +13,10 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
 class _AppBarScreenState extends State<AppBarScreen> {
   @override
   Widget build(BuildContext context) {
+    return AppBar();
+  }
+
+  Widget AppBar() {
     return Positioned(
       top: 0,
       left: 0,
@@ -23,10 +27,22 @@ class _AppBarScreenState extends State<AppBarScreen> {
         child: Row(
           children: [
             IconButton(
-                onPressed: () {
-                  _key.currentState!.openDrawer();
-                },
-                icon: Image.asset(Assets.assetsIconsMenu)),
+              onPressed: () {
+                _key.currentState!.openDrawer();
+              },
+              icon: Container(
+                width: 40,
+                height: 40,
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(5),
+                child: Image.asset(Assets.assetsIconsMenu),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey),
+                ),
+              ),
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -71,7 +87,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
                 backgroundColor: Colors.red,
                 child: InkWell(
                   child: Image.asset(
-                    Assets.assetsIconsFavorite,
+                    Assets.assetsIconsNotfication,
                   ),
                 ),
               ),

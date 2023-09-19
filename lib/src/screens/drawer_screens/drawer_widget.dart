@@ -19,6 +19,7 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Padding(
+      key: _key,
       padding: EdgeInsets.only(top: 60),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
@@ -45,19 +46,24 @@ class _NavBarState extends State<NavBar> {
                             fontWeight: FontWeight.bold),
                       ),
                       Spacer(),
-                      Container(
-                        width: 40,
-                        height: 40,
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(5),
-                        child: Image.asset(
-                          Assets.assetsIconsRightArrow,
-                          color: Colors.grey[300],
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Container(
+                          width: 40,
+                          height: 40,
+                          margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(5),
+                          child: Image.asset(
+                            Assets.assetsIconsRightArrow,
+                            color: Colors.grey[300],
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey),
+                          ),
                         ),
                       ),
                     ],
@@ -197,7 +203,7 @@ class _NavBarState extends State<NavBar> {
                 ),
                 onTap: () {},
               ),
-              SizedBox(height: 80),
+              SizedBox(height: 60),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
