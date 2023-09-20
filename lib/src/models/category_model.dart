@@ -1,21 +1,38 @@
-//TODO: crate a model for category to use in firebase
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CategoryModel {
-  final String uid;
-  final String categoryName;
-  final String description;
+  String? uid;
+  String? categoryName;
+  String? description;
+
+  Timestamp? createAt;
+  Timestamp? updateAt;
 
   CategoryModel({
-    required this.uid,
-    required this.categoryName,
-    required this.description,
+    this.uid,
+    this.categoryName,
+    this.description,
+    this.createAt,
+    this.updateAt,
   });
 
-  Map<String, dynamic> categoryModel() {
+  Map<String, dynamic> topMap() {
     return {
-      'id': uid,
+      'uid': uid,
       'categoryName': categoryName,
-      'email': description,
+      'description': description,
+      'createAt': createAt,
+      'updateAt': updateAt,
     };
+  }
+
+  factory CategoryModel.fromMap(Map<String, dynamic> map) {
+    return CategoryModel(
+      uid: map['uid'],
+      categoryName: map['categoryName'],
+      description: map['description'],
+      createAt: map['createAt'],
+      updateAt: map['updateAt'],
+    );
   }
 }
