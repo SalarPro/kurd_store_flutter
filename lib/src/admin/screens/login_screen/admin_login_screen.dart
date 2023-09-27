@@ -28,7 +28,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   get _appBar => AppBar(
       title: Text(
         "Kurd Store",
-        style: KSTextStyle.bold(24, fontFamily: "roboto"),
+        style: KSTextStyle.dark(24, fontFamily: "roboto"),
       ),
       actions: [
         KSWidget.iconFrame(Assets.assetsIconsUser,
@@ -48,7 +48,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
         Center(
           child: Text(
             "Welcome Admin",
-            style: KSTextStyle.bold(40,
+            style: KSTextStyle.dark(40,
                 fontWeight: FontWeight.bold, fontFamily: "roboto"),
           ),
         ),
@@ -76,7 +76,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
             prefixIcon: KSWidget.iconFrame(Assets.assetsIconsEmail,
                 hasBorder: false, padding: EdgeInsets.all(10)),
             hintText: "Email",
-            hintStyle: KSTextStyle.bold(14,
+            hintStyle: KSTextStyle.dark(14,
                 fontWeight: FontWeight.w400, fontFamily: "roboto"),
             border: InputBorder.none),
       ),
@@ -109,7 +109,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
               color: isPasswordVisible ? Colors.red : null,
             ),
             hintText: "Password",
-            hintStyle: KSTextStyle.bold(14,
+            hintStyle: KSTextStyle.dark(14,
                 fontWeight: FontWeight.w400, fontFamily: "roboto"),
             border: InputBorder.none),
       ),

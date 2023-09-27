@@ -1,11 +1,20 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/helper/ks_helper.dart';
 import 'package:kurd_store/src/helper/ks_text_style.dart';
+import 'package:kurd_store/src/models/category_model.dart';
+import 'package:uuid/uuid.dart';
 
 class AdminCategoryEditScreen extends StatefulWidget {
-  const AdminCategoryEditScreen({super.key});
+  const AdminCategoryEditScreen({super.key, this.category});
+
+  final KSCategory? category;
 
   @override
   State<AdminCategoryEditScreen> createState() =>
@@ -13,23 +22,59 @@ class AdminCategoryEditScreen extends StatefulWidget {
 }
 
 class _AdminCategoryEditScreenState extends State<AdminCategoryEditScreen> {
+  KSCategory? category;
+
+  bool isLoading = false;
+
+  var nameETC = TextEditingController();
+
+  File? imageFile;
+  String? imageUrl;
+
+  bool isUpdate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.category != null) {
+      category = widget.category;
+      nameETC.text = category!.name ?? "";
+      isUpdate = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar,
-      body: _body,
+      body: _bodyLayout,
     );
   }
+
+  get _bodyLayout => Stack(
+        children: [
+          _body,
+          if (isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              width: Get.width,
+              height: Get.height,
+              child: Center(
+                child: CircularProgressIndicator(color: Colors.amber),
+              ),
+            ),
+        ],
+      );
 
   get _appBar => AppBar(
         title: Column(children: [
           Text(
             "Kurd Store",
-            style: KSTextStyle.bold(24, fontFamily: "roboto"),
+            style: KSTextStyle.dark(24, fontFamily: "roboto"),
           ),
           Text(
             "Admin Name",
-            style: KSTextStyle.bold(17,
+            style: KSTextStyle.dark(17,
                 fontWeight: FontWeight.w400, fontFamily: "roboto"),
           ),
         ]),
@@ -61,22 +106,35 @@ class _AdminCategoryEditScreenState extends State<AdminCategoryEditScreen> {
       );
 
   get _body {
+    Widget? imageWidget;
+    if (imageFile != null) {
+      imageWidget = Image.file(imageFile!);
+    } else if (category?.iconImageUrl != null) {
+      imageWidget = CachedNetworkImage(
+        imageUrl: category!.iconImageUrl!,
+      );
+    } else {
+      imageWidget = Image.asset(
+        Assets.assetsIconsSelectImage,
+        scale: 8,
+      );
+    }
+
     return SingleChildScrollView(
       child: Column(
         children: [
+          const SizedBox(height: 20),
           Center(
             child: Container(
-              padding: EdgeInsets.all(35),
-              margin: EdgeInsets.only(top: 20),
               height: 280,
               width: 280,
-              child: Image.asset(
-                Assets.assetsIconsSelectImage,
-                scale: 8,
-              ),
               decoration: BoxDecoration(
                   color: Color(0xffF0F0F0),
                   borderRadius: BorderRadius.circular(20)),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: imageWidget,
+              ),
             ),
           ),
           SizedBox(
@@ -87,19 +145,6 @@ class _AdminCategoryEditScreenState extends State<AdminCategoryEditScreen> {
             height: 15,
           ),
           nameTextField(),
-          Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color.fromARGB(96, 0, 0, 0)),
-                borderRadius: BorderRadius.circular(13)),
-            margin: EdgeInsets.all(16),
-            child: TextField(
-              decoration: InputDecoration(
-                  prefixIcon: iconFrame(Assets.assetsIconsName),
-                  hintText: "Catagory Name...",
-                  hintStyle: TextStyle(fontWeight: FontWeight.w400),
-                  border: InputBorder.none),
-            ),
-          ),
           SizedBox(
             height: 90,
           ),
@@ -116,10 +161,11 @@ class _AdminCategoryEditScreenState extends State<AdminCategoryEditScreen> {
           borderRadius: BorderRadius.circular(13)),
       margin: EdgeInsets.all(16),
       child: TextField(
+        controller: nameETC,
         decoration: InputDecoration(
             prefixIcon: iconFrame(Assets.assetsIconsName),
             hintText: "Name...",
-            hintStyle: KSTextStyle.bold(15,
+            hintStyle: KSTextStyle.dark(15,
                 fontWeight: FontWeight.w400, fontFamily: "roboto"),
             border: InputBorder.none),
       ),
@@ -149,7 +195,9 @@ class _AdminCategoryEditScreenState extends State<AdminCategoryEditScreen> {
 
   Widget get selectImageBtn {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        pickImage();
+      },
       child: Center(
         child: Container(
           height: 65,
@@ -191,7 +239,13 @@ class _AdminCategoryEditScreenState extends State<AdminCategoryEditScreen> {
 
   Widget get saveBtn {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        if (isUpdate) {
+          update();
+        } else {
+          save();
+        }
+      },
       child: Center(
         child: Container(
           height: 65,
@@ -229,5 +283,82 @@ class _AdminCategoryEditScreenState extends State<AdminCategoryEditScreen> {
         ),
       ),
     );
+  }
+
+  void pickImage() async {
+    var tempFile = await KSHelper.pickImageFromGallery(cropTheImage: true);
+    if (tempFile != null) {
+      setState(() {
+        imageFile = tempFile;
+      });
+    }
+  }
+
+  save() async {
+    //create new
+    category = KSCategory();
+
+    if (imageFile == null && category?.iconImageUrl == null) {
+      KSHelper.showSnackBar("Please select category image");
+      return;
+    }
+
+    var categoryName = nameETC.text.trim();
+    if (categoryName.isEmpty) {
+      KSHelper.showSnackBar("Please enter category name");
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    if (imageFile != null) {
+      category!.iconImageUrl =
+          await KSHelper.uploadMedia(imageFile!, 'categories');
+    }
+
+    category!.uid = const Uuid().v4();
+    category!.name = categoryName;
+
+    await category!.save();
+
+    setState(() {
+      isLoading = false;
+    });
+
+    Get.back();
+  }
+
+  update() async {
+    if (imageFile == null && category?.iconImageUrl == null) {
+      KSHelper.showSnackBar("Please select category image");
+      return;
+    }
+
+    var categoryName = nameETC.text.trim();
+    if (categoryName.isEmpty) {
+      KSHelper.showSnackBar("Please enter category name");
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    if (imageFile != null) {
+      category!.iconImageUrl =
+          await KSHelper.uploadMedia(imageFile!, 'categories');
+    }
+
+    category!.name = categoryName;
+
+    await category!.update();
+
+    setState(() {
+      isLoading = false;
+    });
+
+    Get.back();
   }
 }

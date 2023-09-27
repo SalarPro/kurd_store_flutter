@@ -1,9 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:math';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kurd_store/src/admin/screens/category_screen/admin_category_edit_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_text_style.dart';
+import 'package:kurd_store/src/models/category_model.dart';
+import 'package:uuid/uuid.dart';
 
 class AdminCategoryScreen extends StatefulWidget {
   const AdminCategoryScreen({super.key});
@@ -25,11 +31,11 @@ class _AdminCategoryScreenState extends State<AdminCategoryScreen> {
         title: Column(children: [
           Text(
             "Kurd Store",
-            style: KSTextStyle.bold(24, fontFamily: "roboto"),
+            style: KSTextStyle.dark(24, fontFamily: "roboto"),
           ),
           Text(
             "Admin Name",
-            style: KSTextStyle.bold(17,
+            style: KSTextStyle.dark(17,
                 fontWeight: FontWeight.w400, fontFamily: "roboto"),
           ),
         ]),
@@ -81,250 +87,48 @@ class _AdminCategoryScreenState extends State<AdminCategoryScreen> {
               decoration: InputDecoration(
                   prefixIcon: iconFrame(Assets.assetsIconsSearch),
                   hintText: "Search...",
-                  hintStyle: KSTextStyle.bold(15,
+                  hintStyle: KSTextStyle.dark(15,
                       fontWeight: FontWeight.w400, fontFamily: "roboto"),
                   border: InputBorder.none),
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
-          mainCellClothes(),
-          SizedBox(
-            height: 15,
-          ),
-          Divider(
-            thickness: 1,
-            color: const Color.fromARGB(61, 0, 0, 0),
-          ),
-          mainCellElectronic(),
-          SizedBox(
-            height: 15,
-          ),
-          Divider(
-            thickness: 1,
-            color: const Color.fromARGB(61, 0, 0, 0),
-          ),
-          mainCellCosmetic(),
-          SizedBox(
-            height: 15,
-          ),
-          Divider(
-            thickness: 1,
-            color: const Color.fromARGB(61, 0, 0, 0),
-          ),
-        ],
-      ),
-    );
-  }
+          StreamBuilder<List<KSCategory>>(
+            stream: KSCategory.streamAll(),
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.red,
+                ));
+              }
 
-  GestureDetector mainCellCosmetic() {
-    return GestureDetector(
-      onTap: () {},
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.only(left: 15, top: 10),
-            decoration: BoxDecoration(
-                color: Color(0xffF0F0F0),
-                borderRadius: BorderRadius.circular(12)),
-            height: 170,
-            width: 140,
-            child: Image.asset(
-              Assets.assetsIconsCosmeticProduct,
-            ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 25),
-            child: Text(
-              "Cosmetic",
-              style: KSTextStyle.bold(18,
-                  fontWeight: FontWeight.w700, fontFamily: "roboto"),
-            ),
-          ),
-          Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(4),
-                margin: EdgeInsets.only(left: 70, top: 10),
-                height: 40,
-                width: 40,
-                child: Image.asset(
-                  Assets.assetsIconsAdd,
-                ),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(12)),
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.all(4),
-                  margin: EdgeInsets.only(left: 70, top: 70),
-                  height: 40,
-                  width: 40,
-                  child:
-                      Image.asset(Assets.assetsIconsRemove, color: Colors.red),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(12)),
-                ),
-              ),
-            ],
+              List<KSCategory> items = snapshot.data!;
+              return ReorderableListView(
+                onReorder: (oldIndex, newIndex) {
+                  var nIndex = oldIndex > newIndex ? newIndex : newIndex - 1;
+                  setState(() {
+                    var fromIndex = items[oldIndex];
+                    items.removeAt(oldIndex);
+
+                    items.insert(nIndex, fromIndex);
+                  });
+
+                  var range = (oldIndex - nIndex).abs();
+                  var startFrom = min(oldIndex, nIndex);
+
+                  for (var i = startFrom; i <= (startFrom + range); i++) {
+                    items[i].orderIndex = i + 1;
+                    items[i].update();
+                  }
+                },
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                children: items.map((e) => itemCell(e)).toList(),
+              );
+            },
           )
         ],
       ),
-    );
-  }
-
-  GestureDetector mainCellElectronic() {
-    return GestureDetector(
-      onTap: () {},
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.only(left: 15, top: 10),
-            decoration: BoxDecoration(
-                color: Color(0xffF0F0F0),
-                borderRadius: BorderRadius.circular(12)),
-            height: 170,
-            width: 140,
-            child: Image.asset(
-              Assets.assetsIconsElectronicProduct,
-            ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 25),
-            child: Text(
-              "Electronic",
-              style: KSTextStyle.bold(18,
-                  fontWeight: FontWeight.w700, fontFamily: "roboto"),
-            ),
-          ),
-          Column(
-            children: [
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.all(4),
-                  margin: EdgeInsets.only(left: 60, top: 10),
-                  height: 40,
-                  width: 40,
-                  child: Image.asset(
-                    Assets.assetsIconsAdd,
-                  ),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(12)),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.all(4),
-                  margin: EdgeInsets.only(left: 60, top: 70),
-                  height: 40,
-                  width: 40,
-                  child: Image.asset(
-                    Assets.assetsIconsRemove,
-                    color: Colors.red,
-                  ),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(12)),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Row mainCellClothes() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AdminCategoryEditScreen()));
-          },
-          child: Container(
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.only(left: 15),
-            decoration: BoxDecoration(
-                color: Color(0xffF0F0F0),
-                borderRadius: BorderRadius.circular(12)),
-            height: 170,
-            width: 140,
-            child: Image.asset(
-              Assets.assetsIconsClothesProduct,
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          child: Text(
-            "Clothes",
-            style: KSTextStyle.bold(18,
-                fontWeight: FontWeight.w700, fontFamily: "roboto"),
-          ),
-        ),
-        Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AdminCategoryEditScreen()));
-              },
-              child: Container(
-                padding: EdgeInsets.all(4),
-                margin: EdgeInsets.only(left: 80, top: 10),
-                height: 40,
-                width: 40,
-                child: Image.asset(
-                  Assets.assetsIconsAdd,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                padding: EdgeInsets.all(4),
-                margin: EdgeInsets.only(left: 80, top: 70),
-                height: 40,
-                width: 40,
-                child: Image.asset(Assets.assetsIconsRemove, color: Colors.red),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(12)),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 
@@ -346,6 +150,105 @@ class _AdminCategoryScreenState extends State<AdminCategoryScreen> {
       height: 25,
       width: 25,
       child: Image.asset(iconPath!),
+    );
+  }
+
+  Widget itemCell(KSCategory ksCategory) {
+    return GestureDetector(
+      key: Key(ksCategory.uid ?? const Uuid().v4()),
+      onTap: () {
+        Get.to(() => AdminCategoryEditScreen(
+              category: ksCategory,
+            ));
+      },
+      child: Container(
+        color: Colors.transparent,
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  decoration: BoxDecoration(
+                      color: Color(0xffF0F0F0),
+                      borderRadius: BorderRadius.circular(12)),
+                  height: 140,
+                  width: 140,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: CachedNetworkImage(
+                      imageUrl: ksCategory.iconImageUrl ?? "",
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.error,
+                        size: 50,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        ksCategory.name ?? "",
+                        style: KSTextStyle.dark(18,
+                            fontWeight: FontWeight.w700, fontFamily: "roboto"),
+                      ),
+                      Text(
+                        "${ksCategory.orderIndex}",
+                        style: KSTextStyle.dark(12,
+                            fontWeight: FontWeight.w700, fontFamily: "roboto"),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(4),
+                      margin: EdgeInsets.only(left: 80, top: 10),
+                      height: 40,
+                      width: 40,
+                      child: Image.asset(
+                        Assets.assetsIconsAdd,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: EdgeInsets.all(4),
+                        margin: EdgeInsets.only(left: 80, top: 70),
+                        height: 40,
+                        width: 40,
+                        child: Image.asset(Assets.assetsIconsRemove,
+                            color: Colors.red),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 10),
+              ],
+            ),
+            Divider(
+              thickness: 1,
+              color: const Color.fromARGB(61, 0, 0, 0),
+              endIndent: 16,
+              indent: 16,
+            )
+          ],
+        ),
+      ),
     );
   }
 }

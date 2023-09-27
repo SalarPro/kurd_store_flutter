@@ -28,11 +28,11 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
         title: Column(children: [
           Text(
             "Kurd Store",
-            style: KSTextStyle.bold(24, fontFamily: "roboto"),
+            style: KSTextStyle.dark(24, fontFamily: "roboto"),
           ),
           Text(
             "Admin Name",
-            style: KSTextStyle.bold(17,
+            style: KSTextStyle.dark(17,
                 fontWeight: FontWeight.w400, fontFamily: "roboto"),
           ),
         ]),
@@ -79,7 +79,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
               decoration: InputDecoration(
                   prefixIcon: iconFrame(Assets.assetsIconsSearch),
                   hintText: "Search...",
-                  hintStyle: KSTextStyle.bold(15,
+                  hintStyle: KSTextStyle.dark(15,
                       fontWeight: FontWeight.w400, fontFamily: "roboto"),
                   border: InputBorder.none),
             ),
@@ -143,7 +143,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
             margin: EdgeInsets.only(top: 25),
             child: Text(
               "Order",
-              style: KSTextStyle.bold(18,
+              style: KSTextStyle.dark(18,
                   fontWeight: FontWeight.w700, fontFamily: "roboto"),
             ),
           ),
@@ -179,7 +179,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
             margin: EdgeInsets.only(top: 25),
             child: Text(
               "Product",
-              style: KSTextStyle.bold(18,
+              style: KSTextStyle.dark(18,
                   fontWeight: FontWeight.w700, fontFamily: "roboto"),
             ),
           ),
@@ -216,7 +216,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
             margin: EdgeInsets.only(top: 15),
             child: Text(
               "Category",
-              style: KSTextStyle.bold(18,
+              style: KSTextStyle.dark(18,
                   fontWeight: FontWeight.w700, fontFamily: "roboto"),
             ),
           ),

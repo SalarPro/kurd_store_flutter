@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class KSTextStyle {
-  static light(
+  static TextStyle light(
     double size, {
     Color? color,
     FontWeight? fontWeight,
@@ -16,7 +16,7 @@ class KSTextStyle {
     );
   }
 
-  static bold(
+  static TextStyle dark(
     double size, {
     Color? color,
     FontWeight? fontWeight,
