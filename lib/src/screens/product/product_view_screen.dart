@@ -67,7 +67,15 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
           SizedBox(height: 30),
           itemCounter(),
           SizedBox(height: 40),
-          KSWidget.itemSizes(),
+          KSWidget.itemSizes(
+            [
+              'S',
+              'M',
+              'L',
+              'XL',
+              'XXL',
+            ],
+          ),
           SizedBox(height: 30),
           itemColors(),
           SizedBox(height: 30),
@@ -76,6 +84,8 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
       )),
     );
   }
+
+  
 
   GestureDetector addToCartBtn(BuildContext context) {
     return GestureDetector(

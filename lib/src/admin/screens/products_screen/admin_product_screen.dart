@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/admin/screens/products_screen/admin_product_edit_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
+import 'package:kurd_store/src/models/product_model.dart';
 
 class AdminProductScreen extends StatefulWidget {
   const AdminProductScreen({super.key});
@@ -23,20 +25,25 @@ class _AdminProductScreenState extends State<AdminProductScreen> {
             children: [
               appBar(),
               kstextfield(title: 'Search', icon: Icons.search),
-              CartCheckOut(
-                  name: 'T-Shirt', images: Assets.assetsDummyImagesClothes1),
-              CartCheckOut(
-                  name: 'Jlket Bchika',
-                  images: Assets.assetsDummyImagesClothes2),
-              CartCheckOut(
-                  name: 'Qamis', images: Assets.assetsDummyImagesClothes3),
-              CartCheckOut(
-                  name: 'T-Shirt', images: Assets.assetsDummyImagesClothes1),
-              CartCheckOut(
-                  name: 'Jlket Bchika',
-                  images: Assets.assetsDummyImagesClothes2),
-              CartCheckOut(
-                  name: 'Qamis', images: Assets.assetsDummyImagesClothes3),
+              StreamBuilder<List<KSProduct>>(
+                  stream: KSProduct.streamAll(),
+                  builder: (_, snapshot) {
+                    if (snapshot.data == null) {
+                      return CircularProgressIndicator.adaptive();
+                    }
+
+                    var products = snapshot.data!;
+
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: products.length,
+                        itemBuilder: (_, index) {
+                          var product = products[index];
+
+                          return CartCheckOut(product: product);
+                        });
+                  })
             ],
           ),
         ),
@@ -138,75 +145,124 @@ class _AdminProductScreenState extends State<AdminProductScreen> {
   // CartScreen
 
   Widget CartCheckOut({
-    required name,
-    required images,
+    required KSProduct product,
   }) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.all(8),
-                height: 150,
-                width: 150,
-                decoration: BoxDecoration(
-                  color: Colors.black12,
-                  borderRadius: BorderRadius.circular(20),
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => AdminProductEditScreen(
+              wProduct: product,
+            ));
+      },
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: CachedNetworkImage(
+                      imageUrl: product.imageUrl ?? "",
+                    ),
+                  ),
                 ),
-                child: Image.asset(images),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  // mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    // mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.name ?? "N/A",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      name,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: Text("Delete Product!"),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("Do you want to remove This?"),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    product.delete();
+                                  });
+                                  Get.back();
+                                },
+                                child: Text(
+                                  "Yes",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  child: Text("NO"))
+                            ],
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        height: 35,
+                        width: 35,
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.black)),
+                        child: Image.asset(Assets.assetsIconsRemove),
                       ),
                     ),
+                    SizedBox(height: 80),
+                    KSWidget.iconFrame(Assets.assetsIconsAdd, size: 35,
+                        onTap: () {
+                      Get.to(() => AdminProductEditScreen(
+                            wProduct: product,
+                          ));
+                    }),
                   ],
                 ),
-              ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    height: 35,
-                    width: 35,
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.black)),
-                    child: Image.asset(Assets.assetsIconsRemove),
-                  ),
-                  SizedBox(height: 80),
-                  KSWidget.iconFrame(Assets.assetsIconsAdd, size: 35,
-                      onTap: () {
-                    Get.to(() => AdminProductEditScreen());
-                  }),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        SizedBox(height: 10),
-        Divider(
-          color: Colors.grey,
-          height: 2,
-          endIndent: 10,
-          indent: 10,
-        ),
-      ],
+          SizedBox(height: 10),
+          Divider(
+            color: Colors.grey,
+            height: 2,
+            endIndent: 10,
+            indent: 10,
+          ),
+        ],
+      ),
     );
   }
 }

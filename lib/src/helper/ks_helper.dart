@@ -82,7 +82,10 @@ class KSHelper {
     ));
   }
 
-  static Future<String?> uploadMedia(File myImageFile, String imagePath) async {
+  static Future<String?> uploadMedia(
+    File myImageFile,
+    String imagePath,
+  ) async {
     var ref = FirebaseStorage.instance.ref().child(imagePath);
 
     var uploadFileName = "${const Uuid().v4()}.png";

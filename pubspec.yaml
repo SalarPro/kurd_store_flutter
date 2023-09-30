@@ -34,6 +34,7 @@ dependencies:
   firebase_auth: ^4.9.0
   firebase_core: ^2.15.1
   firebase_storage: ^11.2.6
+  flex_color_picker: ^3.3.0
   flutter:
     sdk: flutter
   get: ^4.6.5

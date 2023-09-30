@@ -88,18 +88,19 @@ class KSProduct {
 
   // save
   Future<void> save() {
-    return FirebaseFirestore.instance
-        .collection('products')
-        .doc(uid)
-        .set(toMap());
+    return FirebaseFirestore.instance.collection('products').doc(uid).set({
+      ...toMap(),
+      "createAt": FieldValue.serverTimestamp(),
+      "updateAt": FieldValue.serverTimestamp(),
+    });
   }
 
   // update
   Future<void> update() {
-    return FirebaseFirestore.instance
-        .collection('products')
-        .doc(uid)
-        .update(toMap());
+    return FirebaseFirestore.instance.collection('products').doc(uid).update({
+      ...toMap(),
+      "updateAt": FieldValue.serverTimestamp(),
+    });
   }
 
   // delete

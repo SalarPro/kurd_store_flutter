@@ -94,4 +94,11 @@ class KSCategory {
 
     return KSCategory.fromMap(firebaseQuery.data() ?? {});
   }
+
+  static Future<List<KSCategory>> getAll() {
+    return FirebaseFirestore.instance.collection('categories').get().then(
+        (value) => value.docs
+            .map((e) => KSCategory.fromMap(e.data() as Map<String, dynamic>))
+            .toList());
+  }
 }

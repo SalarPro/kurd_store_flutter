@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_text_style.dart';
+import 'package:kurd_store/src/models/category_model.dart';
 import 'package:kurd_store/src/screens/checkout_screen/checkout_screen.dart';
 import 'package:kurd_store/src/screens/product/product_view_screen.dart';
 
@@ -199,16 +200,12 @@ class KSWidget {
     );
   }
 
-  static Widget itemSizes() {
+  static Widget itemSizes(List<String> sizes) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        sizeCell("S"),
-        sizeCell("M"),
-        sizeCell("L"),
-        sizeCell("XL"),
-        sizeCell("XLL"),
+        for (String sizeText in sizes) sizeCell(sizeText),
       ],
     );
   }
@@ -516,8 +513,8 @@ class KSWidget {
     );
   }
 
-  static Widget adminChangeOrderStateBtn(){
-    return  Container(
+  static Widget adminChangeOrderStateBtn() {
+    return Container(
       width: Get.width / 1.5,
       height: 50,
       decoration: BoxDecoration(
@@ -565,35 +562,6 @@ class KSWidget {
               ))
         ],
       ),
-    );
-  }
-}
-
-const List<String> list = <String>['Clothes', 'Electronic', 'Phones'];
-
-class DropdownMenuExample extends StatefulWidget {
-  const DropdownMenuExample({super.key});
-
-  @override
-  State<DropdownMenuExample> createState() => _DropdownMenuExampleState();
-}
-
-class _DropdownMenuExampleState extends State<DropdownMenuExample> {
-  String dropdownValue = list.first;
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownMenu<String>(
-      initialSelection: list.first,
-      onSelected: (String? value) {
-        // This is called when the user selects an item.
-        setState(() {
-          dropdownValue = value!;
-        });
-      },
-      dropdownMenuEntries: list.map<DropdownMenuEntry<String>>((String value) {
-        return DropdownMenuEntry<String>(value: value, label: value);
-      }).toList(),
     );
   }
 }
