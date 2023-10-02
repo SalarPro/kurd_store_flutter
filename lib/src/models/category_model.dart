@@ -59,7 +59,13 @@ class KSCategory {
   }
 
   // delete
-  Future<void> delete() {
+  Future<void> delete() async {
+    var products = await getProducts();
+
+    for (var product in products) {
+      await product.deleteCategoryUID(uid);
+    }
+
     return FirebaseFirestore.instance
         .collection('categories')
         .doc(uid)
@@ -79,10 +85,11 @@ class KSCategory {
   Future<List<KSProduct>> getProducts() async {
     var response = await FirebaseFirestore.instance
         .collection('products')
-        .where('categoriesIds', arrayContains: [uid]).get();
+        .where('categoriesIds', arrayContains: uid)
+        .get();
 
     return response.docs
-        .map((e) => KSProduct.fromMap(e as Map<String, dynamic>))
+        .map((e) => KSProduct.fromMap(e.data() as Map<String, dynamic>))
         .toList();
   }
 

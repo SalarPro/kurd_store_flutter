@@ -120,4 +120,11 @@ class KSProduct {
 
     return KSProduct.fromMap(firebaseQuery.data() ?? {});
   }
+
+  Future deleteCategoryUID(String? categoryUID) async {
+    //right way
+    await FirebaseFirestore.instance.collection('products').doc(uid).update({
+      'categoriesIds': FieldValue.arrayRemove([categoryUID]),
+    });
+  }
 }

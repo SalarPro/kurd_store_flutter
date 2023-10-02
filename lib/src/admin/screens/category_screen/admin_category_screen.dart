@@ -222,7 +222,41 @@ class _AdminCategoryScreenState extends State<AdminCategoryScreen> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: Text("Delete Category!"),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("Do you want to remove This?"),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    ksCategory.delete();
+                                  });
+                                  Get.back();
+                                },
+                                child: Text(
+                                  "Yes",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  child: Text("NO"))
+                            ],
+                          ),
+                        );
+                      },
                       child: Container(
                         padding: EdgeInsets.all(4),
                         margin: EdgeInsets.only(left: 80, top: 70),

@@ -23,7 +23,7 @@ class AdminProductEditScreen extends StatefulWidget {
 }
 
 class _AdminProductEditScreenState extends State<AdminProductEditScreen> {
-  bool isLoading = false;
+  bool isLoading = true;
 
   List<KSCategory> categories = [];
 
@@ -68,6 +68,11 @@ class _AdminProductEditScreenState extends State<AdminProductEditScreen> {
   @override
   void initState() {
     super.initState();
+
+    loadData();
+  }
+
+  loadData() async {
     if (widget.wProduct != null) {
       isUpdate = true;
       product = widget.wProduct;
@@ -82,16 +87,27 @@ class _AdminProductEditScreenState extends State<AdminProductEditScreen> {
       sizes = product!.sizes ?? [];
     }
 
-    KSCategory.getAll().then((value) async {
-      categories = value;
+    categories = await KSCategory.getAll();
 
-      if (isUpdate) {
-        selectedCategory = categories.firstWhere(
-            (element) => element.uid == product!.categoriesIds!.first);
+    if (isUpdate) {
+      if ((product!.categoriesIds?.isNotEmpty ?? false) &&
+          categories.isNotEmpty) {
+        var isContaing = categories
+            .where((element) => element.uid == product!.categoriesIds!.first)
+            .isNotEmpty;
+
+        if (isContaing) {
+          selectedCategory = categories.firstWhere(
+              (element) => element.uid == product!.categoriesIds!.first);
+        }
       }
+    }
 
-      setState(() {});
-    });
+    setState(() {});
+
+    1.delay(() => setState(() {
+          isLoading = false;
+        }));
   }
 
   @override
@@ -718,10 +734,9 @@ class _AdminProductEditScreenState extends State<AdminProductEditScreen> {
   }
 
   Widget dropDown() {
-    if (categories.isEmpty)
-      return Container(
-        child: CircularProgressIndicator(),
-      );
+    if (categories.isEmpty) {
+      return CircularProgressIndicator();
+    }
     return DropdownMenu<KSCategory>(
       initialSelection: selectedCategory ?? categories.first,
       onSelected: (KSCategory? value) {
