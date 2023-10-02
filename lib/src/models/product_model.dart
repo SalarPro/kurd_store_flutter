@@ -17,6 +17,8 @@ class KSProduct {
   Timestamp? updateAt;
 
   int quantity = 0;
+  String? selectedSize;
+  int? selectedColor;
 
   bool get isDiscounted => priceDiscount != null;
 
@@ -35,6 +37,10 @@ class KSProduct {
       tempPrice += (price ?? 0) * quantity;
     }
     return tempPrice;
+  }
+
+  double get discountAmount {
+    return totalPrice - totalPriceAfterDiscount;
   }
 
   KSProduct({
@@ -119,6 +125,14 @@ class KSProduct {
         await FirebaseFirestore.instance.collection('products').doc(uid).get();
 
     return KSProduct.fromMap(firebaseQuery.data() ?? {});
+  }
+
+  static Stream<KSProduct> streamByUID(String uid) {
+    return FirebaseFirestore.instance
+        .collection('products')
+        .doc(uid)
+        .snapshots()
+        .map((event) => KSProduct.fromMap(event.data() ?? {}));
   }
 
   Future deleteCategoryUID(String? categoryUID) async {

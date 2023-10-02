@@ -1,10 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
+import 'package:kurd_store/src/models/category_model.dart';
+import 'package:kurd_store/src/models/product_model.dart';
+import 'package:kurd_store/src/providers/app_provider.dart';
+import 'package:kurd_store/src/screens/cart_screen/cart_screen.dart';
 import 'package:kurd_store/src/screens/drawer_screens/drawer_widget.dart';
 import 'package:kurd_store/src/screens/product/product_see_all_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -26,18 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: appBar(),
       body: Stack(
         children: [
-          Positioned.fill(
-            child: ListView.builder(
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom +
-                      ((MediaQuery.of(context).padding.bottom > 0 ? 0 : 15)) +
-                      60),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return itemRowWithCategory();
-              },
-            ),
-          ),
+          body,
           AnimatedPositioned(
             curve: Curves.easeInOut,
             duration: Duration(milliseconds: 350),
@@ -53,28 +49,49 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Column itemRowWithCategory() {
+  get body => StreamBuilder<List<KSCategory>>(
+      stream: KSCategory.streamAll(),
+      builder: (_, snapshot) {
+        if (snapshot.data == null) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        List<KSCategory> mCategory = snapshot.data!;
+
+        return ListView.builder(
+          padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom +
+                  ((MediaQuery.of(context).padding.bottom > 0 ? 0 : 15)) +
+                  60),
+          itemCount: mCategory.length,
+          itemBuilder: (context, index) {
+            return itemRowWithCategory(mCategory[index]);
+          },
+        );
+      });
+
+  Column itemRowWithCategory(KSCategory ksCategory) {
     return Column(
       children: [
-        CategoryTitele(
-          title: "Clothes",
-          iconPath: Assets.assetsIconsClothesIcon,
-          // onTap: () {},
-        ),
+        CategoryTitele(ksCategory),
         SizedBox(
           height: 200,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return KSWidget.cardItems(
-                  itemName: "T-Shirt Adidas", //odd even
-                  itemPath: [
-                    Assets.assetsDummyImagesClothes1,
-                    Assets.assetsDummyImagesClothes2,
-                    Assets.assetsDummyImagesClothes3,
-                  ][index % 3],
-                  price: "30,000");
+          child: StreamBuilder<List<KSProduct>>(
+            stream: ksCategory.streamProducts(),
+            builder: (_, snapshot) {
+              if (snapshot.data == null) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              List<KSProduct> mProducts = snapshot.data!;
+
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: mProducts.length,
+                itemBuilder: (context, index) {
+                  return KSWidget.cardItems(mProducts[index]);
+                },
+              );
             },
           ),
         ),
@@ -82,11 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget CategoryTitele({
-    required final String title,
-    required final String iconPath,
-    final Function? onTap,
-  }) {
+  Widget CategoryTitele(KSCategory ksCategory) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
@@ -95,13 +108,15 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Row(
             children: [
-              KSWidget.iconFrame(
-                iconPath,
+              CachedNetworkImage(
+                imageUrl: ksCategory.iconImageUrl ?? "",
+                width: 30,
+                height: 30,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  title,
+                  ksCategory.name ?? "N/A",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
@@ -109,17 +124,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           GestureDetector(
             onTap: () {
-              // onTap;
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SeeAllProduct(
+                            category: ksCategory,
+                          )));
             },
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SeeAllProduct()));
-              },
-              child: Text(
-                "See more",
-                style: TextStyle(color: Colors.blue),
-              ),
+            child: Text(
+              "See more",
+              style: TextStyle(color: Colors.blue),
             ),
           )
         ],
@@ -127,54 +141,64 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget NavigationBar(
-      // String? iconPath,
-      ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 15),
-          height: 60,
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.8),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      height: 35,
-                      width: 35,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white),
-                      child: Image.asset(Assets.assetsIconsCart),
+  Widget NavigationBar() {
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => CartScreen());
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        height: 35,
+                        width: 35,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white),
+                        child: Image.asset(Assets.assetsIconsCart),
+                      ),
                     ),
-                  ),
-                  Text(
-                    "Cart",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
-                  )
-                ],
-              ),
-              Text(
-                "150,000 IQD",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              )
-            ],
-          )),
+                    Text(
+                      "Cart",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    )
+                  ],
+                ),
+                Text(
+                  "${Provider.of<AppProvider>(context).cart.length}",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                ),
+                Text(
+                  "150,000 IQD",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                )
+              ],
+            )),
+      ),
     );
   }
 

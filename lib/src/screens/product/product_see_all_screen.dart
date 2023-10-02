@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
+import 'package:kurd_store/src/models/category_model.dart';
+import 'package:kurd_store/src/models/product_model.dart';
 
 class SeeAllProduct extends StatefulWidget {
-  const SeeAllProduct({super.key});
+  const SeeAllProduct({super.key, required this.category});
+
+  final KSCategory category;
 
   @override
   State<SeeAllProduct> createState() => _SeeAllProductState();
@@ -17,20 +21,26 @@ class _SeeAllProductState extends State<SeeAllProduct> {
           title: Text("Clothes"),
         ),
         body: Container(
-          child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              padding: EdgeInsets.all(10),
-              itemCount: 11,
-              itemBuilder: (BuildContext context, int index) {
-                return KSWidget.cardItems2Grid(
-                    itemPath: Assets.assetsDummyImagesClothes1,
-                    price: '15,000',
-                    itemName: 'T-Shirt');
+          child: StreamBuilder<List<KSProduct>>(
+              stream: widget.category.streamProducts(),
+              builder: (_, snapshot) {
+                if (snapshot.data == null) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                List<KSProduct> mProducts = snapshot.data!;
+                return GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                    ),
+                    padding: EdgeInsets.all(10),
+                    itemCount: mProducts.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return KSWidget.cardItems2Grid(mProducts[index]);
+                    });
               }),
         ));
   }

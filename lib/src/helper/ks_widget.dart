@@ -1,20 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/helper/ks_helper.dart';
 import 'package:kurd_store/src/helper/ks_text_style.dart';
-import 'package:kurd_store/src/models/category_model.dart';
+import 'package:kurd_store/src/models/product_model.dart';
 import 'package:kurd_store/src/screens/checkout_screen/checkout_screen.dart';
 import 'package:kurd_store/src/screens/product/product_view_screen.dart';
 
 class KSWidget {
-  static Widget cardItems({
-    required String itemPath,
-    required String price,
-    required String itemName,
-  }) {
+  static Widget cardItems(
+    KSProduct product,
+  ) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => ProductViewScreen());
+        Get.to(() => ProductViewScreen(product: product));
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
@@ -38,11 +38,8 @@ class KSWidget {
                       child: Center(
                         child: Padding(
                           padding: EdgeInsets.only(right: 25),
-                          child: Image.asset(
-                            itemPath,
-                            // width: Get.width / 4,
-                            // height: Get.width / 4,
-                          ),
+                          child: CachedNetworkImage(
+                              imageUrl: product.imageUrl ?? ""),
                         ),
                       ),
                     ),
@@ -58,18 +55,19 @@ class KSWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                itemName,
+                                product.name ?? "N/A",
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
-                                "$price IQD",
+                                KSHelper.formatNumber(product.price,
+                                    postfix: " IQD"),
                                 maxLines: 1,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -94,18 +92,14 @@ class KSWidget {
     );
   }
 
-  static Widget cardItems2Grid({
-    required String itemPath,
-    required String price,
-    required String itemName,
-  }) {
+  static Widget cardItems2Grid(KSProduct ksProduct) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => ProductViewScreen());
+        Get.to(() => ProductViewScreen(product: ksProduct));
       },
       child: Container(
         height: double.infinity,
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: Colors.black12,
           borderRadius: BorderRadius.circular(20),
@@ -119,15 +113,15 @@ class KSWidget {
                 Expanded(
                   child: Center(
                     child: Padding(
-                      padding: EdgeInsets.only(right: 25),
-                      child: Image.asset(
-                        itemPath,
+                      padding: const EdgeInsets.only(right: 25),
+                      child: CachedNetworkImage(
+                        imageUrl: ksProduct.imageUrl ?? "",
                         height: 100,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -139,18 +133,18 @@ class KSWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            itemName,
+                            ksProduct.name ?? "N/A",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            "$price IQD",
+                            KSHelper.formatNumber(ksProduct.price),
                             maxLines: 1,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
                             ),
@@ -200,17 +194,27 @@ class KSWidget {
     );
   }
 
-  static Widget itemSizes(List<String> sizes) {
+  static Widget itemSizes(List<String> sizes,
+      {Function(String)? onSizeSelected, String? selectedValue}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        for (String sizeText in sizes) sizeCell(sizeText),
+        for (String sizeText in sizes)
+          GestureDetector(
+              onTap: () {
+                if (onSizeSelected != null) {
+                  onSizeSelected(sizeText);
+                }
+              },
+              child: sizeCell(sizeText, selectedValue)),
       ],
     );
   }
 
-  static Padding sizeCell(String sizeString) {
+  static Padding sizeCell(String sizeString, String? selectedValue) {
+    var isSelected = sizeString == selectedValue;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Container(
@@ -219,7 +223,7 @@ class KSWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.amber.withOpacity(0),
+          color: Colors.green.withOpacity(isSelected ? 0.5 : 0),
           border: Border.all(color: Colors.black),
         ),
         child: Text(
@@ -230,9 +234,7 @@ class KSWidget {
     );
   }
 
-  static Widget CartCheckOut({
-    bool count = true,
-  }) {
+  static Widget CartCheckOut(KSProduct product) {
     return Column(
       children: [
         Padding(
@@ -261,37 +263,49 @@ class KSWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'T-Shirt',
+                      product.name ?? "N/A",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      '25,000 IQD',
-                      style: TextStyle(
-                          decoration: TextDecoration.lineThrough,
-                          decorationColor: Colors.red,
-                          decorationThickness: 2,
+                    if (product.isDiscounted)
+                      Text(
+                        KSHelper.formatNumber(product.price, postfix: " IQD"),
+                        style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            decorationColor: Colors.red,
+                            decorationThickness: 2,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      ),
+                    if (!product.isDiscounted)
+                      Text(
+                        KSHelper.formatNumber(product.price, postfix: " IQD"),
+                        style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
-                          color: Colors.red),
-                    ),
-                    Text(
-                      '15,000 IQD',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                    if (product.isDiscounted)
+                      Text(
+                        KSHelper.formatNumber(product.priceDiscount,
+                            postfix: " IQD"),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     Text(
-                      '30,000 IQD',
+                      KSHelper.formatNumber(product.totalPriceAfterDiscount,
+                          postfix: " IQD"),
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    if (count == true) cartItemCounter(),
+                    cartItemCounter(),
                   ],
                 ),
               ),

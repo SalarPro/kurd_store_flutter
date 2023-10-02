@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
+import 'package:kurd_store/src/models/product_model.dart';
 
 class AdminOrderViewScreen extends StatefulWidget {
   const AdminOrderViewScreen({super.key});
@@ -18,9 +19,9 @@ class _AdminOrderViewScreenState extends State<AdminOrderViewScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            KSWidget.CartCheckOut(count: false),
-            KSWidget.CartCheckOut(count: false),
-            KSWidget.CartCheckOut(count: false),
+            KSWidget.CartCheckOut(KSProduct()),
+            KSWidget.CartCheckOut(KSProduct()),
+            KSWidget.CartCheckOut(KSProduct()),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
               child: Container(

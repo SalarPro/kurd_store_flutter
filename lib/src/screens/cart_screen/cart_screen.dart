@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
+import 'package:kurd_store/src/providers/app_provider.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -21,27 +23,16 @@ class _CartScreenState extends State<CartScreen> {
         fit: StackFit.expand,
         children: [
           Positioned.fill(
-            child: SingleChildScrollView(
+            child: ListView.builder(
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).padding.bottom +
                       ((MediaQuery.of(context).padding.bottom > 0 ? 0 : 15)) +
                       70 +
                       120),
-              child: Column(
-                children: [
-                  Column(
-                    children: [
-                      Column(
-                        children: [
-                          KSWidget.CartCheckOut(),
-                          KSWidget.CartCheckOut(),
-                          KSWidget.CartCheckOut(),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              itemCount: Provider.of<AppProvider>(context).cart.length,
+              itemBuilder: (_, index) {
+                return KSWidget.CartCheckOut(Provider.of<AppProvider>(context).cart[index]);
+              },
             ),
           ),
           Positioned(

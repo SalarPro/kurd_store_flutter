@@ -93,6 +93,15 @@ class KSCategory {
         .toList();
   }
 
+  Stream<List<KSProduct>> streamProducts() {
+    return FirebaseFirestore.instance
+        .collection('products')
+        .where('categoriesIds', arrayContains: uid)
+        .snapshots()
+        .map((event) =>
+            event.docs.map((e) => KSProduct.fromMap(e.data())).toList());
+  }
+
   static Future<KSCategory> getByUID(String uid) async {
     var firebaseQuery = await FirebaseFirestore.instance
         .collection('categories')

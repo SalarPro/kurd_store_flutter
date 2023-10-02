@@ -1,96 +1,139 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/helper/ks_helper.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
-import 'package:kurd_store/src/screens/cart_screen/cart_screen.dart';
+import 'package:kurd_store/src/models/product_model.dart';
+import 'package:kurd_store/src/providers/app_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductViewScreen extends StatefulWidget {
-  const ProductViewScreen({super.key});
+  const ProductViewScreen({super.key, required this.product});
+
+  final KSProduct product;
 
   @override
   State<ProductViewScreen> createState() => _ProductViewScreenState();
 }
 
 class _ProductViewScreenState extends State<ProductViewScreen> {
+  int itemQuantity = 1;
+  String? selectedSize;
+  int? selectedColor;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Kurd Store"),
       ),
-      body: SingleChildScrollView(
-          child: Column(
-        children: [
-          imageView(),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: StreamBuilder(
+          stream: KSProduct.streamByUID(widget.product.uid!),
+          builder: (_, snapshot) {
+            if (snapshot.data == null) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            KSProduct cProduct = snapshot.data!;
+
+            return SingleChildScrollView(
+                child: Column(
               children: [
-                Text(
-                  'T-Shitr',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                imageView(cProduct),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        cProduct.name ?? 'N/A',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      if (cProduct.isDiscounted)
+                        Text(
+                          KSHelper.formatNumber(cProduct.priceDiscount,
+                              postfix: " IQD"),
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                    ],
+                  ),
                 ),
-                Text(
-                  '25,000 IQD',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        cProduct.description ?? 'N/A',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w400),
+                      ),
+                      if (cProduct.isDiscounted)
+                        Text(
+                          KSHelper.formatNumber(cProduct.price,
+                              postfix: " IQD"),
+                          style: TextStyle(
+                              decoration: TextDecoration.lineThrough,
+                              decorationColor: Colors.red,
+                              decorationThickness: 2,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red),
+                        ),
+                      if (!cProduct.isDiscounted)
+                        Text(
+                          KSHelper.formatNumber(cProduct.price,
+                              postfix: " IQD"),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
+                SizedBox(height: 30),
+                itemCounter(cProduct),
+                SizedBox(height: 40),
+                KSWidget.itemSizes(
+                  cProduct.sizes ?? [],
+                  selectedValue: selectedSize,
+                  onSizeSelected: (String size) {
+                    setState(
+                      () {
+                        selectedSize = size;
+                      },
+                    );
+                  },
+                ),
+                SizedBox(height: 30),
+                itemColors(
+                  cProduct.colors ?? [],
+                ),
+                SizedBox(height: 30),
+                addToCartBtn(cProduct),
               ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Nike Brand Full Quality',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-                ),
-                Text(
-                  '30,000 IQD',
-                  style: TextStyle(
-                      decoration: TextDecoration.lineThrough,
-                      decorationColor: Colors.red,
-                      decorationThickness: 2,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 30),
-          itemCounter(),
-          SizedBox(height: 40),
-          KSWidget.itemSizes(
-            [
-              'S',
-              'M',
-              'L',
-              'XL',
-              'XXL',
-            ],
-          ),
-          SizedBox(height: 30),
-          itemColors(),
-          SizedBox(height: 30),
-          addToCartBtn(context),
-        ],
-      )),
+            ));
+          }),
     );
   }
 
-  
-
-  GestureDetector addToCartBtn(BuildContext context) {
+  GestureDetector addToCartBtn(KSProduct product) {
     return GestureDetector(
       onTap: () {
-        Get.to(CartScreen());
+
+        product.quantity = itemQuantity;
+        product.selectedSize = selectedSize;
+        product.selectedColor = selectedColor;
+        Provider.of<AppProvider>(context, listen: false).addToCart(product);
+        Get.back(closeOverlays: true);
+        KSHelper.showSnackBar("Added to cart");
       },
       child: Padding(
         padding: EdgeInsets.only(
@@ -139,38 +182,56 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
     );
   }
 
-  Widget itemColors() {
+  Widget itemColors(List<int> colors) {
     return Wrap(
       alignment: WrapAlignment.center,
       crossAxisAlignment: WrapCrossAlignment.center,
       runSpacing: 4,
       spacing: 4,
       children: [
-        colorCell(Colors.red),
-        colorCell(Color.fromARGB(255, 96, 77, 243)),
-        colorCell(Color.fromARGB(255, 202, 24, 173)),
-        colorCell(Color.fromARGB(255, 119, 195, 13)),
-        colorCell(Color.fromARGB(255, 96, 77, 243)),
-        colorCell(Color.fromARGB(255, 13, 200, 85)),
+        for (int colorCode in colors)
+          GestureDetector(
+            onTap: () {
+              selectedColor = colorCode;
+              setState(() {});
+            },
+            child: colorCell(
+              Color(
+                colorCode,
+              ),
+            ),
+          ),
       ],
     );
   }
 
   Widget colorCell(Color color) {
-    return Container(
-      height: 30,
-      width: 30,
-      padding: EdgeInsets.all(3),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: color.withOpacity(1),
-        border: Border.all(color: Colors.white54, width: 3),
-      ),
+    var isSelected = color.value == selectedColor;
+    return Stack(
+      children: [
+        Container(
+          height: 40,
+          width: 40,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: color.withOpacity(1),
+            border: Border.all(color: Colors.white54, width: 3),
+          ),
+        ),
+        if (isSelected)
+          Positioned.fill(
+              child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              Assets.assetsIconsPlus,
+              color: Colors.white,
+            ),
+          ))
+      ],
     );
   }
 
-  Padding itemCounter() {
+  Padding itemCounter(KSProduct cProduct) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
@@ -178,7 +239,13 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              itemQuantity--;
+              if (itemQuantity < 0) {
+                itemQuantity = 0;
+              }
+              setState(() {});
+            },
             child: Container(
                 alignment: Alignment.center,
                 height: 35,
@@ -197,7 +264,7 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
             width: 20,
           ),
           Text(
-            '2',
+            itemQuantity.toString(),
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
           SizedBox(
@@ -205,11 +272,11 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
           ),
           GestureDetector(
             onTap: () {
-              Get.snackbar(
-                'Hello',
-                'message',
-              );
-              // Get.defaultDialog(title: 'hello diyalog');
+              itemQuantity++;
+              if (itemQuantity > cProduct.maxQuantity!) {
+                itemQuantity = cProduct.maxQuantity!;
+              }
+              setState(() {});
             },
             child: Container(
                 alignment: Alignment.center,
@@ -230,16 +297,21 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
     );
   }
 
-  Widget imageView() {
+  Widget imageView(KSProduct ksProduct) {
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: Container(
-        padding: EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(20),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Container(
+          padding: EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: CachedNetworkImage(
+            imageUrl: ksProduct.imageUrl ?? "",
+          ),
         ),
-        child: Image.asset(Assets.assetsDummyImagesClothes1),
       ),
     );
   }

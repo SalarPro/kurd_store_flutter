@@ -13,11 +13,13 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => AppProvider()),
-      ChangeNotifierProvider(create: (_) => AdminAuthProvider()),
-    ],
-    child: const MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AppProvider()),
+        ChangeNotifierProvider(create: (_) => AdminAuthProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }

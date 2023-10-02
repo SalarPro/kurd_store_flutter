@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:kurd_store/src/helper/ks_text_style.dart';
 import 'package:uuid/uuid.dart';
 
@@ -57,29 +58,31 @@ class KSHelper {
   }
 
   static showSnackBar(text) {
-    Get.showSnackbar(GetSnackBar(
-      message: text,
-      messageText: Text(
-        text,
-        style: KSTextStyle.dark(14),
-      ),
-      snackPosition: SnackPosition.TOP,
-      borderRadius: 13,
-      duration: 2.seconds,
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
-      backgroundColor: Colors.white,
-      boxShadows: const [
-        BoxShadow(
-          blurRadius: 5,
-          color: Colors.black38,
-          offset: Offset(
-            1,
-            3,
+    Get.showSnackbar(
+      GetSnackBar(
+        message: text,
+        messageText: Text(
+          text,
+          style: KSTextStyle.dark(14),
+        ),
+        snackPosition: SnackPosition.TOP,
+        borderRadius: 13,
+        duration: 2.seconds,
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
+        backgroundColor: Colors.white,
+        boxShadows: const [
+          BoxShadow(
+            blurRadius: 5,
+            color: Colors.black38,
+            offset: Offset(
+              1,
+              3,
+            ),
           ),
-        )
-      ],
-    ));
+        ],
+      ),
+    );
   }
 
   static Future<String?> uploadMedia(
@@ -104,5 +107,17 @@ class KSHelper {
     var downloadUrl = await ref.getDownloadURL();
 
     return downloadUrl;
+  }
+
+  static String formatNumber(number, {String postfix = ""}) {
+    if (number == null) {
+      return "n";
+    }
+
+    if (number is int || number is double) {
+      return NumberFormat("#,###").format(number) + postfix;
+    }
+
+    return number.toString() + postfix;
   }
 }
