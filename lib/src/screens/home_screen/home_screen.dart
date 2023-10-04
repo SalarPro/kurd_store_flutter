@@ -25,8 +25,6 @@ class HomeScreen extends StatefulWidget {
 GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
 class _HomeScreenState extends State<HomeScreen> {
-  var isNavigationBarVisible = true;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
             duration: Duration(milliseconds: 350),
             bottom: MediaQuery.of(context).padding.bottom +
                 ((MediaQuery.of(context).padding.bottom > 0 ? 0 : 15)) +
-                (isNavigationBarVisible ? 0 : -150),
+                (Provider.of<AppProvider>(context).cart.isNotEmpty ? 0 : -150),
             left: 0,
             right: 0,
             child: NavigationBar(),

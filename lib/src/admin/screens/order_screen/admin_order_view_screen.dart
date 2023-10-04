@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kurd_store/src/helper/ks_helper.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
 
 class AdminOrderViewScreen extends StatefulWidget {
@@ -43,7 +44,7 @@ class _AdminOrderViewScreenState extends State<AdminOrderViewScreen> {
                 ),
               ),
             ),
-            KSWidget.rachit(),
+            cartDetails(),
             const SizedBox(
               height: 15,
             ),
@@ -52,6 +53,105 @@ class _AdminOrderViewScreenState extends State<AdminOrderViewScreen> {
               height: 15,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget cartDetails(
+      // String? iconPath,
+      ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        // height: 200,
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Products',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: 200,
+                  // ),
+                  Text(
+                    KSHelper.formatNumber(123456, postfix: " IQD"),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Discount',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: 200,
+                  // ),
+                  Text(
+                    KSHelper.formatNumber(123456, postfix: " IQD"),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+              Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Total',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: 200,
+                  // ),
+                  Text(
+                    KSHelper.formatNumber(123456, postfix: " IQD"),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

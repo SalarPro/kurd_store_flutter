@@ -280,7 +280,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  cartItemCounter(product),
+                  if (product.maxQuantity != 1) cartItemCounter(product),
                 ],
               ),
             ],
@@ -316,7 +316,6 @@ class _CartScreenState extends State<CartScreen> {
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.amber.withOpacity(1),
               border: Border.all(color: Colors.black),
             ),
             child: Image.asset(
@@ -347,7 +346,6 @@ class _CartScreenState extends State<CartScreen> {
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.amber.withOpacity(0),
               border: Border.all(color: Colors.black),
             ),
             child: Image.asset(

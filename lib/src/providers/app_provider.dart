@@ -55,4 +55,9 @@ class AppProvider extends ChangeNotifier {
   double get discountAmount {
     return totalPrice - totalPriceAfterDiscount;
   }
+
+  void clearCart() {
+    cart.clear();
+    notifyListeners();
+  }
 }

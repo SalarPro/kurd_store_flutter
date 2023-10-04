@@ -33,6 +33,10 @@ class Assets {
   /// assets/icons/address.png
   static const String assetsIconsAddress = "assets/icons/address.png";
 
+  /// Assets for assetsIconsAdmin
+  /// assets/icons/admin.png
+  static const String assetsIconsAdmin = "assets/icons/admin.png";
+
   /// Assets for assetsIconsCart
   /// assets/icons/cart.png
   static const String assetsIconsCart = "assets/icons/cart.png";
@@ -69,6 +73,10 @@ class Assets {
   /// assets/icons/color.png
   static const String assetsIconsColor = "assets/icons/color.png";
 
+  /// Assets for assetsIconsContact
+  /// assets/icons/contact.png
+  static const String assetsIconsContact = "assets/icons/contact.png";
+
   /// Assets for assetsIconsCosmeticIcon
   /// assets/icons/cosmetic_icon.png
   static const String assetsIconsCosmeticIcon = "assets/icons/cosmetic_icon.png";
@@ -97,10 +105,6 @@ class Assets {
   /// assets/icons/email.png
   static const String assetsIconsEmail = "assets/icons/email.png";
 
-  /// Assets for assetsIconsFQ
-  /// assets/icons/FQ.png
-  static const String assetsIconsFQ = "assets/icons/FQ.png";
-
   /// Assets for assetsIconsFavorite
   /// assets/icons/favorite.png
   static const String assetsIconsFavorite = "assets/icons/favorite.png";
@@ -108,6 +112,10 @@ class Assets {
   /// Assets for assetsIconsFillter
   /// assets/icons/fillter.png
   static const String assetsIconsFillter = "assets/icons/fillter.png";
+
+  /// Assets for assetsIconsFq
+  /// assets/icons/fq.png
+  static const String assetsIconsFq = "assets/icons/fq.png";
 
   /// Assets for assetsIconsHidePassword
   /// assets/icons/hide_password.png
@@ -232,6 +240,22 @@ class Assets {
   /// Assets for assetsImagesBgWhite
   /// assets/images/bg_white.jpg
   static const String assetsImagesBgWhite = "assets/images/bg_white.jpg";
+
+  /// Assets for assetsLottieLotiteSocial
+  /// assets/lottie/lotite_social.json
+  static const String assetsLottieLotiteSocial = "assets/lottie/lotite_social.json";
+
+  /// Assets for assetsLottieLottieLoading
+  /// assets/lottie/lottie_loading.json
+  static const String assetsLottieLottieLoading = "assets/lottie/lottie_loading.json";
+
+  /// Assets for assetsLottieLottieLoading2
+  /// assets/lottie/lottie_loading_2.json
+  static const String assetsLottieLottieLoading2 = "assets/lottie/lottie_loading_2.json";
+
+  /// Assets for assetsLottieLottieOading3
+  /// assets/lottie/lottie_oading_3.json
+  static const String assetsLottieLottieOading3 = "assets/lottie/lottie_oading_3.json";
 
   /// Assets for assetsLottiePersnonThinkingStore
   /// assets/lottie/persnon_thinking_store.json

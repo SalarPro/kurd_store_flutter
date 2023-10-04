@@ -5,8 +5,10 @@ import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_helper.dart';
 import 'package:kurd_store/src/helper/ks_text_style.dart';
 import 'package:kurd_store/src/models/product_model.dart';
+import 'package:kurd_store/src/providers/app_provider.dart';
 import 'package:kurd_store/src/screens/checkout_screen/checkout_screen.dart';
 import 'package:kurd_store/src/screens/product/product_view_screen.dart';
+import 'package:provider/provider.dart';
 
 class KSWidget {
   static Widget cardItems(
@@ -22,8 +24,6 @@ class KSWidget {
           aspectRatio: 0.8,
           child: Container(
             padding: EdgeInsets.all(10),
-            // height: 185,
-            // width: Get.width / 2.5,
             decoration: BoxDecoration(
               color: Colors.black12,
               borderRadius: BorderRadius.circular(20),
@@ -37,13 +37,13 @@ class KSWidget {
                     Expanded(
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.only(right: 25),
+                          padding: const EdgeInsets.only(right: 25),
                           child: CachedNetworkImage(
                               imageUrl: product.imageUrl ?? ""),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
@@ -75,7 +75,26 @@ class KSWidget {
                             ],
                           ),
                         ),
-                        iconFrame(Assets.assetsIconsCart)
+                        iconFrame(
+                          Assets.assetsIconsPlus,
+                          onTap: () {
+                            if ((product.sizes?.length ?? 0) > 1 ||
+                                (product.colors?.length ?? 0) > 1) {
+                              Get.to(() => ProductViewScreen(product: product));
+                            } else {
+                              product.quantity = 1;
+
+                              // null or ["red"]
+                              product.selectedColor =
+                                  product.colors?.firstOrNull;
+                              product.selectedSize = product.sizes?.firstOrNull;
+
+                              Provider.of<AppProvider>(Get.context!,
+                                      listen: false)
+                                  .addToCart(product);
+                            }
+                          },
+                        )
                       ],
                     )
                   ],
@@ -229,102 +248,6 @@ class KSWidget {
         child: Text(
           sizeString,
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-
-  static Widget rachit(
-      // String? iconPath,
-      ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        // height: 200,
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.8),
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Products',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  // SizedBox(
-                  //   width: 200,
-                  // ),
-                  Text(
-                    '100,000 IQD',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Discount',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  Text(
-                    '40,000 IQD',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-              Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Total',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  // SizedBox(
-                  //   width: 200,
-                  // ),
-                  Text(
-                    '60,000 IQD',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
         ),
       ),
     );
