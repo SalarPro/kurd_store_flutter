@@ -4,6 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/helper/ks_helper.dart';
+import 'package:kurd_store/src/helper/ks_text_style.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
 import 'package:kurd_store/src/models/category_model.dart';
 import 'package:kurd_store/src/models/product_model.dart';
@@ -149,20 +151,30 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          height: 60,
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 0),
+                    child: Badge(
+                      label: Text(
+                        Provider.of<AppProvider>(context)
+                            .cart
+                            .length
+                            .toString(),
+                      ),
+                      offset: Offset(10, -8),
+                      textStyle: KSTextStyle.light(12),
+                      alignment: Alignment.topRight,
                       child: Container(
                         padding: EdgeInsets.all(5),
                         height: 35,
@@ -173,31 +185,31 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Image.asset(Assets.assetsIconsCart),
                       ),
                     ),
-                    Text(
-                      "Cart",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    )
-                  ],
-                ),
-                Text(
-                  "${Provider.of<AppProvider>(context).cart.length}",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
-                ),
-                Text(
-                  "150,000 IQD",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
-                )
-              ],
-            )),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Cart",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                  ),
+                ],
+              ),
+              Text(
+                KSHelper.formatNumber(
+                    Provider.of<AppProvider>(context).totalPriceAfterDiscount,
+                    postfix: " IQD"),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

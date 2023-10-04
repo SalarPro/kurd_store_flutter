@@ -16,7 +16,7 @@ class KSProduct {
   Timestamp? createAt;
   Timestamp? updateAt;
 
-  int quantity = 0;
+  int? quantity;
   String? selectedSize;
   int? selectedColor;
 
@@ -25,16 +25,16 @@ class KSProduct {
   double get totalPrice {
     var tempPrice = 0.0;
 
-    tempPrice += (price ?? 0) * quantity;
+    tempPrice += (price ?? 0) * (quantity ?? 1);
     return tempPrice;
   }
 
   double get totalPriceAfterDiscount {
     var tempPrice = 0.0;
     if (priceDiscount != null) {
-      tempPrice += (priceDiscount ?? 0) * quantity;
+      tempPrice += (priceDiscount ?? 0) * (quantity ?? 1);
     } else {
-      tempPrice += (price ?? 0) * quantity;
+      tempPrice += (price ?? 0) * (quantity ?? 1);
     }
     return tempPrice;
   }
@@ -56,6 +56,11 @@ class KSProduct {
     this.categoriesIds,
     this.createAt,
     this.updateAt,
+    this.quantity,
+    this.selectedSize,
+    this.selectedColor,
+
+
   });
 
   Map<String, dynamic> toMap() {
@@ -72,6 +77,9 @@ class KSProduct {
       'categoriesIds': categoriesIds,
       'createAt': createAt,
       'updateAt': updateAt,
+      'quantity': quantity,
+      'selectedSize': selectedSize,
+      'selectedColor': selectedColor,
     };
   }
 
@@ -89,6 +97,9 @@ class KSProduct {
       categoriesIds: List<String>.from(map['categoriesIds'] ?? []),
       createAt: map['createAt'],
       updateAt: map['updateAt'],
+      quantity: map['quantity'],
+      selectedSize: map['selectedSize'],
+      selectedColor: map['selectedColor'],
     );
   }
 

@@ -35,9 +35,7 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
             if (snapshot.data == null) {
               return Center(child: CircularProgressIndicator());
             }
-
             KSProduct cProduct = snapshot.data!;
-
             return SingleChildScrollView(
                 child: Column(
               children: [
@@ -99,7 +97,7 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
                   ),
                 ),
                 SizedBox(height: 30),
-                itemCounter(cProduct),
+                if (cProduct.maxQuantity != 1) itemCounter(cProduct),
                 SizedBox(height: 40),
                 KSWidget.itemSizes(
                   cProduct.sizes ?? [],
@@ -127,13 +125,7 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
   GestureDetector addToCartBtn(KSProduct product) {
     return GestureDetector(
       onTap: () {
-
-        product.quantity = itemQuantity;
-        product.selectedSize = selectedSize;
-        product.selectedColor = selectedColor;
-        Provider.of<AppProvider>(context, listen: false).addToCart(product);
-        Get.back(closeOverlays: true);
-        KSHelper.showSnackBar("Added to cart");
+        addToCart(product);
       },
       child: Padding(
         padding: EdgeInsets.only(
@@ -241,8 +233,8 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
           GestureDetector(
             onTap: () {
               itemQuantity--;
-              if (itemQuantity < 0) {
-                itemQuantity = 0;
+              if (itemQuantity <= 0) {
+                itemQuantity = 1;
               }
               setState(() {});
             },
@@ -314,5 +306,25 @@ class _ProductViewScreenState extends State<ProductViewScreen> {
         ),
       ),
     );
+  }
+
+  void addToCart(KSProduct product) {
+    if (((product.sizes?.length ?? 0) > 0) && selectedSize == null) {
+      KSHelper.showSnackBar("Please select Size");
+      return;
+    }
+
+    if (((product.colors?.length ?? 0) > 0) && selectedColor == null) {
+      KSHelper.showSnackBar("Please select Color");
+      return;
+    }
+
+    product.quantity = itemQuantity;
+    product.selectedSize = selectedSize;
+    product.selectedColor = selectedColor;
+
+    Provider.of<AppProvider>(context, listen: false).addToCart(product);
+    Get.back(closeOverlays: true);
+    KSHelper.showSnackBar("Added to cart");
   }
 }

@@ -5,7 +5,29 @@ class AppProvider extends ChangeNotifier {
   List<KSProduct> cart = [];
 
   void addToCart(KSProduct product) {
-    cart.add(product);
+    // new items
+    // uid
+    // color
+    // size
+
+    var isExist = false;
+
+    for (var cCart in cart) {
+      if (cCart.uid == product.uid &&
+          cCart.selectedColor == product.selectedColor &&
+          cCart.selectedSize == product.selectedSize) {
+        cCart.quantity = (cCart.quantity ?? 1) + (product.quantity ?? 1);
+
+        if ((cCart.quantity ?? 0) > (product.maxQuantity ?? 0)) {
+          cCart.quantity = product.maxQuantity;
+        }
+
+        isExist = true;
+      }
+    }
+    if (!isExist) {
+      cart.add(product);
+    }
     notifyListeners();
   }
 
@@ -14,4 +36,23 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  double get totalPriceAfterDiscount {
+    var price = 0.0;
+    for (KSProduct item in cart) {
+      price += item.totalPriceAfterDiscount;
+    }
+    return price;
+  }
+
+  double get totalPrice {
+    var price = 0.0;
+    for (KSProduct item in cart) {
+      price += item.totalPrice;
+    }
+    return price;
+  }
+
+  double get discountAmount {
+    return totalPrice - totalPriceAfterDiscount;
+  }
 }

@@ -22,7 +22,7 @@ class KSOrder {
   int get itemsQuantity {
     var tempQuantity = 0;
     for (KSProduct item in products ?? []) {
-      tempQuantity += item.quantity;
+      tempQuantity += item.quantity ?? 1;
     }
     return tempQuantity;
   }
