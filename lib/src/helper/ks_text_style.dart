@@ -25,7 +25,7 @@ class KSTextStyle {
     return TextStyle(
       fontSize: size,
       color: color ?? Colors.black,
-      fontWeight: fontWeight ?? FontWeight.bold,
+      fontWeight: fontWeight ?? FontWeight.normal,
       fontFamily: fontFamily ?? GoogleFonts.roboto().fontFamily,
     );
   }

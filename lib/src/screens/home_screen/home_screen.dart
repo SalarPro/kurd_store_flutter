@@ -22,13 +22,13 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+      key: scaffoldKey,
       drawer: MainDrawer(),
       appBar: appBar(),
       body: Stack(
@@ -225,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 IconButton(
                   onPressed: () {
-                    _scaffoldKey.currentState?.openDrawer();
+                    scaffoldKey.currentState?.openDrawer();
                   },
                   icon: KSWidget.iconFrame(Assets.assetsIconsMenu, size: 30),
                 ),

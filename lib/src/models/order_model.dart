@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kurd_store/src/helper/ks_helper.dart';
 import 'package:kurd_store/src/models/product_model.dart';
 
 class KSOrder {
   String? uid;
+  String? trackingNumber;
   String? userName;
   String? userPhone;
   String? userCity;
@@ -27,8 +29,9 @@ class KSOrder {
     return tempQuantity;
   }
 
+  //START
+
   double get totalPrice {
-    //100,000
     var price = 0.0;
     for (KSProduct item in products ?? []) {
       price += item.totalPrice;
@@ -36,34 +39,26 @@ class KSOrder {
     return price;
   }
 
-  double get totalDiscounted {
-    //40,000
-    var tempPrice = 0.0;
-    for (KSProduct item in products ?? []) {
-      tempPrice += item.priceDiscount ?? 0;
-    }
-    return tempPrice;
-  }
-
   double get totalPriceAfterDiscount {
-    //60,000
     var price = 0.0;
     for (KSProduct item in products ?? []) {
-      if (item.priceDiscount != null) {
-        price += item.totalPriceAfterDiscount;
-      } else {
-        price += item.totalPrice;
-      }
+      price += item.totalPriceAfterDiscount;
     }
     return price;
   }
 
+  double get discountAmount {
+    return totalPrice - totalPriceAfterDiscount;
+  }
+
+  //END
   double get totalWithDiscountAndDelivery {
     return totalPriceAfterDiscount + (deliveryPrice ?? 0);
   }
 
   KSOrder({
     this.uid,
+    this.trackingNumber,
     this.userName,
     this.userPhone,
     this.userCity,
@@ -71,6 +66,7 @@ class KSOrder {
     this.userNote,
     this.products,
     this.status,
+    this.deliveryPrice,
     this.createAt,
     this.updateAt,
   });
@@ -78,6 +74,7 @@ class KSOrder {
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
+      'trackingNumber': trackingNumber,
       'userName': userName,
       'userPhone': userPhone,
       'userCity': userCity,
@@ -85,6 +82,7 @@ class KSOrder {
       'userNote': userNote,
       'products': products?.map((product) => product.toMap()).toList(),
       'status': status,
+      'deliveryPrice': deliveryPrice,
       'createAt': createAt,
       'updateAt': updateAt,
     };
@@ -93,6 +91,7 @@ class KSOrder {
   factory KSOrder.fromMap(Map<String, dynamic> map) {
     return KSOrder(
       uid: map['uid'],
+      trackingNumber: map['trackingNumber'],
       userName: map['userName'],
       userPhone: map['userPhone'],
       userCity: map['userCity'],
@@ -101,6 +100,7 @@ class KSOrder {
       products: List<KSProduct>.from(
           map['products']?.map((x) => KSProduct.fromMap(x))),
       status: map['status'],
+      deliveryPrice: map['deliveryPrice'],
       createAt: map['createAt'],
       updateAt: map['updateAt'],
     );
@@ -108,22 +108,23 @@ class KSOrder {
 
   // save
   Future<void> save() async {
+    trackingNumber = KSHelper.generateRandomString(6);
     for (KSProduct item in products ?? []) {
       await item.decrementQuantity();
     }
-
-    return FirebaseFirestore.instance
-        .collection('orders')
-        .doc(uid)
-        .set(toMap());
+    return FirebaseFirestore.instance.collection('orders').doc(uid).set({
+      ...toMap(),
+      'createAt': FieldValue.serverTimestamp(),
+      'updateAt': FieldValue.serverTimestamp(),
+    });
   }
 
   // update
   Future<void> update() {
-    return FirebaseFirestore.instance
-        .collection('orders')
-        .doc(uid)
-        .update(toMap());
+    return FirebaseFirestore.instance.collection('orders').doc(uid).update({
+      ...toMap(),
+      'updateAt': FieldValue.serverTimestamp(),
+    });
   }
 
   // delete
@@ -147,5 +148,13 @@ class KSOrder {
         await FirebaseFirestore.instance.collection('orders').doc(uid).get();
 
     return KSOrder.fromMap(firebaseQuery.data() ?? {});
+  }
+
+  static Stream<KSOrder> streamByUID(String? uid) {
+    return FirebaseFirestore.instance
+        .collection('orders')
+        .doc(uid)
+        .snapshots()
+        .map((document) => KSOrder.fromMap(document.data() ?? {}));
   }
 }

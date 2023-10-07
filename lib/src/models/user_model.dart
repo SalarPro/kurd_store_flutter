@@ -44,4 +44,48 @@ class UserModel {
       updateAt: map['updateAt'],
     );
   }
+
+  Future save() async {
+    await FirebaseFirestore.instance.collection('users').doc(uid).set({
+      ...toMap(),
+      'createAt': FieldValue.serverTimestamp(),
+      'updateAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Future update() async {
+    await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      ...toMap(),
+      'updateAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Future delete() async {
+    await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+  }
+
+  Stream<List<UserModel>> streamAll() {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .orderBy('createAt', descending: true)
+        .snapshots()
+        .map((event) {
+      return event.docs.map((e) => UserModel.fromMap(e.data())).toList();
+    });
+  }
+
+  // stream one
+  static Stream<UserModel> streamOne(String uid) {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .snapshots()
+        .map((event) => UserModel.fromMap(event.data() as Map<String, dynamic>));
+  }
+
+  // get one
+  static Future<UserModel> getOne(String uid) async {
+    var doc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    return UserModel.fromMap(doc.data() as Map<String, dynamic>);
+  }
 }

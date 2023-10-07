@@ -1,11 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kurd_store/src/admin/screens/login_screen/register_screen.dart';
 import 'package:kurd_store/src/admin/screens/main_screen/admin_main_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/helper/ks_helper.dart';
 import 'package:kurd_store/src/helper/ks_text_style.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
+import 'package:kurd_store/src/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class AdminLoginScreen extends StatefulWidget {
   const AdminLoginScreen({super.key});
@@ -16,6 +21,9 @@ class AdminLoginScreen extends StatefulWidget {
 
 class _AdminLoginScreenState extends State<AdminLoginScreen> {
   bool isPasswordVisible = false;
+
+  var emailETC = TextEditingController();
+  var passwordETC = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +80,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
           borderRadius: BorderRadius.circular(13)),
       margin: EdgeInsets.all(16),
       child: TextField(
+        controller: emailETC,
         decoration: InputDecoration(
             prefixIcon: KSWidget.iconFrame(Assets.assetsIconsEmail,
                 hasBorder: false, padding: EdgeInsets.all(10)),
@@ -90,6 +99,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
           borderRadius: BorderRadius.circular(13)),
       margin: EdgeInsets.all(16),
       child: TextField(
+        controller: passwordETC,
         obscureText: !isPasswordVisible,
         decoration: InputDecoration(
             prefixIcon: KSWidget.iconFrame(Assets.assetsIconsPassword,
@@ -119,8 +129,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   Widget get loginBtn {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AdminMainScreen()));
+        login();
       },
       child: Center(
         child: Container(
@@ -159,5 +168,42 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
         ),
       ),
     );
+  }
+
+  void login() async {
+    if (emailETC.text == "admin@admin.admin") {
+      checkTheCodeToRegister(passwordETC.text);
+      return;
+    }
+
+    var email = emailETC.text;
+    var password = passwordETC.text;
+    if (!email.isEmail) {
+      KSHelper.showSnackBar("Wrong Email");
+      return;
+    }
+    if (password.length < 6) {
+      KSHelper.showSnackBar("Wrong Password");
+      return;
+    }
+
+    var isLoggedIn = await Provider.of<AuthProvider>(context, listen: false)
+        .loginWithEmailPassword(email: email, password: password);
+
+    if (isLoggedIn) {
+      Get.off(() => AdminMainScreen());
+    } else {}
+  }
+
+  checkTheCodeToRegister(String code) async {
+    var docs =
+        await FirebaseFirestore.instance.collection('userCode').doc(code).get();
+
+    if (docs.exists && docs.data() != null && docs.data()!['used'] == false) {
+      //register screen
+      Get.off(() => RegisterScreen(code: code));
+    } else {
+      KSHelper.showSnackBar("Wrong Code");
+    }
   }
 }

@@ -1,12 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/admin/screens/category_screen/admin_category_screen.dart';
 import 'package:kurd_store/src/admin/screens/order_screen/admin_order_screen.dart';
 import 'package:kurd_store/src/admin/screens/products_screen/admin_product_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/helper/ks_helper.dart';
 import 'package:kurd_store/src/helper/ks_text_style.dart';
+import 'package:kurd_store/src/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class AdminMainScreen extends StatefulWidget {
   const AdminMainScreen({super.key});
@@ -25,13 +30,13 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
   }
 
   get _appBar => AppBar(
-        title: Column(children: [
+        title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
             "Kurd Store",
             style: KSTextStyle.dark(24, fontFamily: "roboto"),
           ),
           Text(
-            "Admin Name",
+            Provider.of<AuthProvider>(context).user?.username?.toString() ?? "",
             style: KSTextStyle.dark(17,
                 fontWeight: FontWeight.w400, fontFamily: "roboto"),
           ),
@@ -46,7 +51,29 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                   border:
                       Border.all(color: const Color.fromARGB(122, 0, 0, 0))),
               child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog.adaptive(
+                              title: Text("Logout"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("Cancel")),
+                                TextButton(
+                                    onPressed: () {
+                                      Provider.of<AuthProvider>(context,
+                                              listen: false)
+                                          .signOut();
+                                      Navigator.pop(context);
+                                      Get.offAll(() => AdminMainScreen());
+                                    },
+                                    child: Text("Logout"))
+                              ],
+                            ));
+                  },
                   icon: iconFrameAppBar(Assets.assetsIconsAdd)))
         ],
         leading: Container(
@@ -110,6 +137,48 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
           Divider(
             thickness: 1,
             color: const Color.fromARGB(61, 0, 0, 0),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              String code = KSHelper.generateRandomString(6); //ABC123
+
+              while (await FirebaseFirestore.instance
+                  .collection('userCode')
+                  .doc(code)
+                  .get()
+                  .then((value) => value.exists)) {
+                code = KSHelper.generateRandomString(6);
+              }
+
+              await FirebaseFirestore.instance
+                  .collection('userCode')
+                  .doc(code)
+                  .set({
+                'used': false,
+                'usedByUid': null,
+                'usedDate': null,
+                'createAt': DateTime.now(),
+              });
+
+              // ignore: use_build_context_synchronously
+              showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                        title: Text("User code"),
+                        content: Text(code),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Clipboard.setData(ClipboardData(text: code));
+                                Navigator.pop(context);
+                                HapticFeedback.mediumImpact();
+                                KSHelper.showSnackBar("$code Copied");
+                              },
+                              child: Text("Copy"))
+                        ],
+                      ));
+            },
+            child: Text("Make new User code"),
           ),
         ],
       ),

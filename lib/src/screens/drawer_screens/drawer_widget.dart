@@ -5,7 +5,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/admin/screens/login_screen/admin_login_screen.dart';
+import 'package:kurd_store/src/admin/screens/main_screen/admin_main_screen.dart';
+import 'package:kurd_store/src/admin/screens/main_screen/test.dart';
 import 'package:kurd_store/src/constants/assets.dart';
+import 'package:kurd_store/src/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class MainDrawer extends StatefulWidget {
   const MainDrawer({super.key});
@@ -139,7 +143,9 @@ class _MainDrawerState extends State<MainDrawer> {
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(Tests());
+                  },
                 ),
                 SizedBox(height: 50),
                 ListTile(
@@ -192,7 +198,12 @@ class _MainDrawerState extends State<MainDrawer> {
                         fontWeight: FontWeight.bold),
                   ),
                   onTap: () {
-                    Get.to(() => AdminLoginScreen());
+                    if (Provider.of<AuthProvider>(context, listen: false)
+                        .isLogin) {
+                      Get.to(() => AdminMainScreen());
+                    } else {
+                      Get.to(() => AdminLoginScreen());
+                    }
                   },
                 ),
                 SizedBox(height: 80),

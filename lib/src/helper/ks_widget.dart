@@ -314,55 +314,5 @@ class KSWidget {
     );
   }
 
-  static Widget adminChangeOrderStateBtn() {
-    return Container(
-      width: Get.width / 1.5,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.8),
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    "Change",
-                    style: KSTextStyle.light(14),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-              left: 0,
-              top: 0,
-              bottom: 0,
-              child: Container(
-                width: Get.width / 2.1,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Center(
-                  child: Text(
-                    "Pending",
-                    style: KSTextStyle.light(20),
-                  ),
-                ),
-              ))
-        ],
-      ),
-    );
-  }
+  
 }

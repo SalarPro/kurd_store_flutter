@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_helper.dart';
+import 'package:kurd_store/src/helper/ks_text_style.dart';
 import 'package:kurd_store/src/models/order_model.dart';
 import 'package:kurd_store/src/providers/app_provider.dart';
 import 'package:lottie/lottie.dart';
@@ -90,6 +91,25 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   icon: Icons.location_city,
                   isEnabled: false),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "Delivery cost: ",
+                  style: KSTextStyle.dark(12),
+                ),
+                Text(
+                  KSHelper.formatNumber(
+                      KSHelper
+                          .iraqCitiesPrice[KSHelper.iraqCities[_selectedFruit]],
+                      postfix: " IQD"),
+                  style: KSTextStyle.dark(12),
+                ),
+                const SizedBox(
+                  width: 16,
+                )
+              ],
+            ),
             KSHelper.ksTextfield(
               hintText: 'Address',
               icon: Icons.location_on,
@@ -99,6 +119,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               hintText: 'Note',
               icon: Icons.note_alt_outlined,
               controller: noteETC,
+              isMultiLine: true,
             ),
             cartDetails(),
             SizedBox(
@@ -140,9 +161,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       fontSize: 15,
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 200,
-                  // ),
                   Text(
                     KSHelper.formatNumber(
                         Provider.of<AppProvider>(context).totalPrice,
@@ -167,12 +185,34 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       fontSize: 15,
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 200,
-                  // ),
                   Text(
                     KSHelper.formatNumber(
                         Provider.of<AppProvider>(context).discountAmount,
+                        postfix: " IQD"),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Delivery',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    KSHelper.formatNumber(
+                        KSHelper.iraqCitiesPrice[
+                            KSHelper.iraqCities[_selectedFruit]],
                         postfix: " IQD"),
                     style: TextStyle(
                       color: Colors.white,
@@ -201,7 +241,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   Text(
                     KSHelper.formatNumber(
                         Provider.of<AppProvider>(context)
-                            .totalPriceAfterDiscount,
+                                .totalPriceAfterDiscount +
+                            (KSHelper.iraqCitiesPrice[
+                                    KSHelper.iraqCities[_selectedFruit]] ??
+                                0),
                         postfix: " IQD"),
                     style: TextStyle(
                       color: Colors.white,
@@ -315,7 +358,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         .replaceAll("(", "")
         .replaceAll(")", "")
         .replaceAll(" ", "");
-    print(phoneNumber);
 
     if (phoneNumber.length != 14) {
       KSHelper.showSnackBar("Please enter your phone, +964 750 123 4567");
@@ -335,12 +377,14 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
     order.uid = Uuid().v4();
     order.userName = nameETC.text;
-    order.userPhone = phoneETC.text;
-    order.userCity = cityETC.text;
+    order.userPhone = phoneNumber;
+    order.userCity = KSHelper.iraqCities[_selectedFruit];
     order.userAddress = addressETC.text;
     order.userNote = noteETC.text;
     order.products = Provider.of<AppProvider>(context, listen: false).cart;
     order.status = "pending";
+    order.deliveryPrice =
+        KSHelper.iraqCitiesPrice[KSHelper.iraqCities[_selectedFruit]];
 
     await order.save();
 

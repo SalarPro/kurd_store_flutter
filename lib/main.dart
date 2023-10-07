@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kurd_store/firebase_options.dart';
 import 'package:kurd_store/src/admin/provider/admin_auth_provider.dart';
 import 'package:kurd_store/src/providers/app_provider.dart';
+import 'package:kurd_store/src/providers/auth_provider.dart';
 import 'package:kurd_store/src/screens/my_app/my_app.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => AppProvider()),
         ChangeNotifierProvider(create: (_) => AdminAuthProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: const MyApp(),
     ),
