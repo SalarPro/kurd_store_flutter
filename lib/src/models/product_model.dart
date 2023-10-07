@@ -43,6 +43,8 @@ class KSProduct {
     return totalPrice - totalPriceAfterDiscount;
   }
 
+  bool get isOutOfStock => maxQuantity == 0 || maxQuantity == null;
+
   KSProduct({
     this.uid,
     this.name,
@@ -59,8 +61,6 @@ class KSProduct {
     this.quantity,
     this.selectedSize,
     this.selectedColor,
-
-
   });
 
   Map<String, dynamic> toMap() {
@@ -150,6 +150,13 @@ class KSProduct {
     //right way
     await FirebaseFirestore.instance.collection('products').doc(uid).update({
       'categoriesIds': FieldValue.arrayRemove([categoryUID]),
+    });
+  }
+
+  // function to dicrement quantity of product
+  Future<void> decrementQuantity() {
+    return FirebaseFirestore.instance.collection('products').doc(uid).update({
+      'maxQuantity': FieldValue.increment(-(quantity ?? 1)),
     });
   }
 }

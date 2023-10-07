@@ -107,7 +107,11 @@ class KSOrder {
   }
 
   // save
-  Future<void> save() {
+  Future<void> save() async {
+    for (KSProduct item in products ?? []) {
+      await item.decrementQuantity();
+    }
+
     return FirebaseFirestore.instance
         .collection('orders')
         .doc(uid)

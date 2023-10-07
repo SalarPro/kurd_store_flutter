@@ -324,7 +324,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
         ),
-        SizedBox(
+      SizedBox(
           width: 10,
         ),
         Text(

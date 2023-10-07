@@ -16,6 +16,9 @@ class KSWidget {
   ) {
     return GestureDetector(
       onTap: () {
+        if (product.isOutOfStock) {
+          return;
+        }
         Get.to(() => ProductViewScreen(product: product));
       },
       child: Padding(
@@ -63,37 +66,55 @@ class KSWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text(
-                                KSHelper.formatNumber(product.price,
-                                    postfix: " IQD"),
-                                maxLines: 1,
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
+                              if (!product.isOutOfStock)
+                                Text(
+                                  KSHelper.formatNumber(product.price,
+                                      postfix: " IQD"),
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
+                              if (product.isOutOfStock)
+                                Text(
+                                  "Out of stock",
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
                             ],
                           ),
                         ),
-                        iconFrame(
-                          Assets.assetsIconsPlus,
-                          onTap: () {
-                            if ((product.sizes?.length ?? 0) > 1 ||
-                                (product.colors?.length ?? 0) > 1) {
-                              Get.to(() => ProductViewScreen(product: product));
-                            } else {
-                              product.quantity = 1;
+                        Opacity(
+                          opacity: product.isOutOfStock ? 0.5 : 1,
+                          child: iconFrame(
+                            Assets.assetsIconsPlus,
+                            onTap: () {
+                              if (product.isOutOfStock) {
+                                return;
+                              }
+                              if ((product.sizes?.length ?? 0) > 1 ||
+                                  (product.colors?.length ?? 0) > 1) {
+                                Get.to(
+                                    () => ProductViewScreen(product: product));
+                              } else {
+                                product.quantity = 1;
 
-                              // null or ["red"]
-                              product.selectedColor =
-                                  product.colors?.firstOrNull;
-                              product.selectedSize = product.sizes?.firstOrNull;
+                                // null or ["red"]
+                                product.selectedColor =
+                                    product.colors?.firstOrNull;
+                                product.selectedSize =
+                                    product.sizes?.firstOrNull;
 
-                              Provider.of<AppProvider>(Get.context!,
-                                      listen: false)
-                                  .addToCart(product);
-                            }
-                          },
+                                Provider.of<AppProvider>(Get.context!,
+                                        listen: false)
+                                    .addToCart(product);
+                              }
+                            },
+                          ),
                         )
                       ],
                     )
