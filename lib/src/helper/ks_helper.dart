@@ -133,12 +133,14 @@ class KSHelper {
     bool isMultiLine = false,
     bool isPassword = false,
     List<TextInputFormatter>? inputFormatters,
+    Function(String text)? onChanged,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: TextField(
+          onChanged: onChanged,
           obscureText: isPassword,
           maxLines: isMultiLine ? null : 1,
           maxLength: isMultiLine ? 255 : null,

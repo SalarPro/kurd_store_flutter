@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_widget.dart';
 import 'package:kurd_store/src/models/category_model.dart';
 import 'package:kurd_store/src/models/product_model.dart';
+import 'package:lottie/lottie.dart';
 
 class SeeAllProduct extends StatefulWidget {
   const SeeAllProduct({super.key, required this.category});
@@ -18,7 +20,22 @@ class _SeeAllProductState extends State<SeeAllProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Clothes"),
+          title: Row(
+            children: [
+              CachedNetworkImage(
+                imageUrl: widget.category.iconImageUrl ?? "",
+                width: 30,
+                height: 30,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  widget.category.name ?? "N/A",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ),
+            ],
+          ),
         ),
         body: Container(
           child: StreamBuilder<List<KSProduct>>(
@@ -28,6 +45,23 @@ class _SeeAllProductState extends State<SeeAllProduct> {
                   return Center(child: CircularProgressIndicator());
                 }
                 List<KSProduct> mProducts = snapshot.data!;
+
+                if (mProducts.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Lottie.asset(
+                          Assets.assetsLottieEmpty,
+                          width: 350,
+                          height: 350,
+                        ),
+                        Text("No Products for ${widget.category.name}"),
+                      ],
+                    ),
+                  );
+                }
+
                 return GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(

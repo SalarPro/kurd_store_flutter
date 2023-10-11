@@ -13,6 +13,7 @@ import 'package:kurd_store/src/providers/app_provider.dart';
 import 'package:kurd_store/src/screens/cart_screen/cart_screen.dart';
 import 'package:kurd_store/src/screens/drawer_screens/drawer_widget.dart';
 import 'package:kurd_store/src/screens/product/product_see_all_screen.dart';
+import 'package:kurd_store/src/screens/search_screen/search_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 (Provider.of<AppProvider>(context).cart.isNotEmpty ? 0 : -150),
             left: 0,
             right: 0,
-            child: NavigationBar(),
+            child: cartInfo(),
           ),
         ],
       ),
@@ -141,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget NavigationBar() {
+  Widget cartInfo() {
     return GestureDetector(
       onTap: () {
         Get.to(() => CartScreen());
@@ -166,8 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Badge(
                       label: Text(
                         Provider.of<AppProvider>(context)
-                            .cart
-                            .length
+                            .totalQuantity
                             .toString(),
                       ),
                       offset: Offset(10, -8),
@@ -251,16 +251,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                Container(
-                  width: 40,
-                  height: 40,
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(5),
-                  child: Image.asset(Assets.assetsIconsSearch),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey),
+                GestureDetector(
+                  onTap: () => Get.to(() => SearchScreen()),
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(5),
+                    child: Image.asset(Assets.assetsIconsSearch),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey),
+                    ),
                   ),
                 ),
                 Container(

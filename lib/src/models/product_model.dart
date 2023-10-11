@@ -20,6 +20,11 @@ class KSProduct {
   String? selectedSize;
   int? selectedColor;
 
+  
+  String get searchText {
+    return "$name $description $uid $price".toLowerCase();
+  }
+
   bool get isDiscounted => priceDiscount != null;
 
   double get totalPrice {

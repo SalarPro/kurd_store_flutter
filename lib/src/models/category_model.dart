@@ -10,6 +10,10 @@ class KSCategory {
   Timestamp? createAt;
   Timestamp? updateAt;
 
+  String get searchText {
+    return "$name $uid".toLowerCase();
+  }
+
   KSCategory({
     this.uid,
     this.name,

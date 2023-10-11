@@ -308,7 +308,8 @@ class _CartScreenState extends State<CartScreen> {
           onTap: () {
             product.quantity = (product.quantity ?? 0) - 1;
             if (product.quantity! <= 0) {
-              product.quantity = 1;
+              Provider.of<AppProvider>(context, listen: false)
+                  .removeFromCart(product);
             }
             setState(() {});
           },
@@ -319,12 +320,15 @@ class _CartScreenState extends State<CartScreen> {
               border: Border.all(color: Colors.black),
             ),
             child: Image.asset(
-              Assets.assetsDummyImagesMinus,
-              scale: 18,
+              product.quantity == 1
+                  ? Assets.assetsIconsRemove
+                  : Assets.assetsDummyImagesMinus,
+              width: 18,
+              height: 18,
             ),
           ),
         ),
-      SizedBox(
+        SizedBox(
           width: 10,
         ),
         Text(
@@ -350,7 +354,8 @@ class _CartScreenState extends State<CartScreen> {
             ),
             child: Image.asset(
               Assets.assetsDummyImagesPlus,
-              scale: 18,
+              width: 18,
+              height: 18,
             ),
           ),
         ),

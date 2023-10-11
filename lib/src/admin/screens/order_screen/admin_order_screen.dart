@@ -16,6 +16,7 @@ class AdminOrderScreen extends StatefulWidget {
 final GlobalKey<ScaffoldState> _key = GlobalKey();
 
 class _AdminOrderScreenState extends State<AdminOrderScreen> {
+  var searchETC = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +31,13 @@ class _AdminOrderScreenState extends State<AdminOrderScreen> {
                   child: Column(
                     children: [
                       KSHelper.ksTextfield(
-                          hintText: 'Search', icon: Icons.search),
+                        hintText: 'Search',
+                        icon: Icons.search,
+                        controller: searchETC,
+                        onChanged: (text) {
+                          setState(() {});
+                        },
+                      ),
                       StreamBuilder<List<KSOrder>>(
                           stream: KSOrder.streamAll(),
                           builder: (_, snapshot) {
@@ -38,12 +45,20 @@ class _AdminOrderScreenState extends State<AdminOrderScreen> {
                               return Center(child: CircularProgressIndicator());
                             }
 
+                            var mOrders = snapshot.data!;
+
+                            mOrders = mOrders
+                                .where((element) => element.searchText
+                                    .toLowerCase()
+                                    .contains(searchETC.text.toLowerCase()))
+                                .toList();
+
                             return ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: snapshot.data!.length,
+                                itemCount: mOrders.length,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (_, index) {
-                                  KSOrder ksOrder = snapshot.data![index];
+                                  KSOrder ksOrder = mOrders[index];
                                   return orderCellWidget(ksOrder);
                                 });
                           })

@@ -19,6 +19,8 @@ class AdminCategoryScreen extends StatefulWidget {
 }
 
 class _AdminCategoryScreenState extends State<AdminCategoryScreen> {
+  var searchETC = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,6 +86,11 @@ class _AdminCategoryScreenState extends State<AdminCategoryScreen> {
                 borderRadius: BorderRadius.circular(8)),
             margin: EdgeInsets.all(16),
             child: TextField(
+              controller: searchETC,
+              onChanged: (String searchText) {
+                print(searchText);
+                setState(() {});
+              },
               decoration: InputDecoration(
                   prefixIcon: iconFrame(Assets.assetsIconsSearch),
                   hintText: "Search...",
@@ -103,6 +110,13 @@ class _AdminCategoryScreenState extends State<AdminCategoryScreen> {
               }
 
               List<KSCategory> items = snapshot.data!;
+
+              items = items
+                  .where((element) => element.searchText
+                      .toLowerCase()
+                      .contains(searchETC.text.toLowerCase()))
+                  .toList();
+
               return ReorderableListView(
                 onReorder: (oldIndex, newIndex) {
                   var nIndex = oldIndex > newIndex ? newIndex : newIndex - 1;

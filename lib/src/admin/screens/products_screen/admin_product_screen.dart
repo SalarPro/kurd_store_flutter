@@ -16,6 +16,8 @@ class AdminProductScreen extends StatefulWidget {
 }
 
 class _AdminProductScreenState extends State<AdminProductScreen> {
+  var searchETC = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +26,7 @@ class _AdminProductScreenState extends State<AdminProductScreen> {
           child: Column(
             children: [
               appBar(),
-              kstextfield(title: 'Search', icon: Icons.search),
+              searchTextField(title: 'Search', icon: Icons.search),
               StreamBuilder<List<KSProduct>>(
                   stream: KSProduct.streamAll(),
                   builder: (_, snapshot) {
@@ -33,6 +35,12 @@ class _AdminProductScreenState extends State<AdminProductScreen> {
                     }
 
                     var products = snapshot.data!;
+
+                    products = products
+                        .where((element) => element.searchText
+                            .toLowerCase()
+                            .contains(searchETC.text.toLowerCase()))
+                        .toList();
 
                     return ListView.builder(
                         shrinkWrap: true,
@@ -118,10 +126,7 @@ class _AdminProductScreenState extends State<AdminProductScreen> {
 
   //Search TextField
 
-  Widget kstextfield({
-    required title,
-    required icon,
-  }) {
+  Widget searchTextField({required title, required icon}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(
@@ -129,6 +134,10 @@ class _AdminProductScreenState extends State<AdminProductScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: TextField(
+            controller: searchETC,
+            onChanged: (value) {
+              setState(() {});
+            },
             decoration: InputDecoration(
               label: Text(title),
               prefixIcon: Icon(icon),

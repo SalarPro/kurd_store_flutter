@@ -19,6 +19,11 @@ class KSOrder {
   Timestamp? createAt;
   Timestamp? updateAt;
 
+  String get searchText {
+    return "$trackingNumber $userName $uid $userPhone $userAddress $status"
+        .toLowerCase();
+  }
+
   int get productQuantity => products?.length ?? 0;
 
   int get itemsQuantity {

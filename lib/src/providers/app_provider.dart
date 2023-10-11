@@ -56,6 +56,14 @@ class AppProvider extends ChangeNotifier {
     return totalPrice - totalPriceAfterDiscount;
   }
 
+  int get totalQuantity {
+    var quantity = 0;
+    for (KSProduct item in cart) {
+      quantity += item.quantity ?? 1;
+    }
+    return quantity;
+  }
+
   void clearCart() {
     cart.clear();
     notifyListeners();

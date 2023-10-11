@@ -241,6 +241,10 @@ class Assets {
   /// assets/images/bg_white.jpg
   static const String assetsImagesBgWhite = "assets/images/bg_white.jpg";
 
+  /// Assets for assetsLottieEmpty
+  /// assets/lottie/empty.json
+  static const String assetsLottieEmpty = "assets/lottie/empty.json";
+
   /// Assets for assetsLottieLotiteSocial
   /// assets/lottie/lotite_social.json
   static const String assetsLottieLotiteSocial = "assets/lottie/lotite_social.json";
