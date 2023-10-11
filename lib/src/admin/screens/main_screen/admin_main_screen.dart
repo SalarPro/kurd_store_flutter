@@ -9,6 +9,7 @@ import 'package:kurd_store/src/admin/screens/order_screen/admin_order_screen.dar
 import 'package:kurd_store/src/admin/screens/products_screen/admin_product_screen.dart';
 import 'package:kurd_store/src/constants/assets.dart';
 import 'package:kurd_store/src/helper/ks_helper.dart';
+import 'package:kurd_store/src/helper/ks_notify.dart';
 import 'package:kurd_store/src/helper/ks_text_style.dart';
 import 'package:kurd_store/src/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -138,6 +139,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
             thickness: 1,
             color: const Color.fromARGB(61, 0, 0, 0),
           ),
+          ElevatedButton(
+              onPressed: () {
+                KSNotify.snedNotificatoinToTopic(
+                    "Hello", "Im body", 'all_user');
+              },
+              child: Text("Send Notification")),
           ElevatedButton(
             onPressed: () async {
               String code = KSHelper.generateRandomString(6); //ABC123

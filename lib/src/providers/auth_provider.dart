@@ -2,15 +2,24 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:kurd_store/src/helper/ks_helper.dart';
 import 'package:kurd_store/src/models/user_model.dart';
+import 'package:kurd_store/src/screens/cart_screen/cart_screen.dart';
 import 'package:kurd_store/src/screens/home_screen/home_screen.dart';
 
 class AuthProvider extends ChangeNotifier {
+  AuthProvider() {
+    _listenToUser();
+
+    initFirebaseMessaging();
+  }
+
   FirebaseFirestore db = FirebaseFirestore.instance;
   User? get fireUser => FirebaseAuth.instance.currentUser;
 
@@ -170,5 +179,54 @@ class AuthProvider extends ChangeNotifier {
     }
     _listenToUser();
     return true;
+  }
+
+  void initFirebaseMessaging() async {
+    print("Firebase Messaging Called");
+    var firebaseMessaging = FirebaseMessaging.instance;
+    await firebaseMessaging.requestPermission();
+
+    firebaseMessaging
+        .subscribeToTopic("all_user")
+        .then((value) => print("Firebase Messaging subscriped to all_user"));
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      var title = event.notification!.title;
+      var body = event.notification!.body;
+
+      print("Firebase Messaging local $title");
+      print("Firebase Messaging local $body");
+      print("Firebase Messaging local ${event.data}");
+
+      KSHelper.showSnackBar("$title\n$body");
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) async {
+      var title = event.notification!.title;
+      var body = event.notification!.body;
+      print("Firebase Messaging $title");
+      print("Firebase Messaging $body");
+      print("Firebase Messaging ${event.data}");
+      print("Firebase Messaging notification clicked");
+
+      await 1.delay();
+
+      if (event.data['open_page'] == "cart_screen") {
+        Get.to(CartScreen());
+      }
+    });
+
+    var token = await firebaseMessaging.getToken();
+
+    firebaseMessaging.onTokenRefresh.listen((String cToken) {
+      if (fireUser?.uid != null) {
+        UserModel.updatePushToken(cToken, fireUser!.uid);
+      }
+    });
+
+    print("Firebase Messaging Token: $token");
+    if (fireUser?.uid != null && token != null) {
+      UserModel.updatePushToken(token, fireUser!.uid);
+    }
   }
 }

@@ -3,13 +3,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  final String? uid;
-  final String? username;
-  final String? email;
-  final String? phone;
-  final String? address;
-  final Timestamp? createAt;
-  final Timestamp? updateAt;
+  String? uid;
+  String? username;
+  String? email;
+  String? phone;
+  String? address;
+  String? pushToken;
+  Timestamp? createAt;
+  Timestamp? updateAt;
 
   UserModel({
     this.uid,
@@ -17,6 +18,7 @@ class UserModel {
     this.email,
     this.phone,
     this.address,
+    this.pushToken,
     this.createAt,
     this.updateAt,
   });
@@ -28,6 +30,7 @@ class UserModel {
       'email': email,
       'phone': phone,
       'address': address,
+      'pushToken': pushToken,
       'createAt': createAt,
       'updateAt': updateAt,
     };
@@ -40,9 +43,17 @@ class UserModel {
       email: map['email'],
       phone: map['phone'],
       address: map['address'],
+      pushToken: map['pushToken'],
       createAt: map['createAt'],
       updateAt: map['updateAt'],
     );
+  }
+
+  static updatePushToken(String token, String uUid) {
+    FirebaseFirestore.instance.collection('users').doc(uUid).update({
+      'pushToken': token,
+      'updateAt': FieldValue.serverTimestamp(),
+    });
   }
 
   Future save() async {
@@ -80,12 +91,14 @@ class UserModel {
         .collection('users')
         .doc(uid)
         .snapshots()
-        .map((event) => UserModel.fromMap(event.data() as Map<String, dynamic>));
+        .map(
+            (event) => UserModel.fromMap(event.data() as Map<String, dynamic>));
   }
 
   // get one
   static Future<UserModel> getOne(String uid) async {
-    var doc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    var doc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
     return UserModel.fromMap(doc.data() as Map<String, dynamic>);
   }
 }

@@ -1,5 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:kurd_store/firebase_options.dart';
 import 'package:kurd_store/src/admin/provider/admin_auth_provider.dart';
 import 'package:kurd_store/src/providers/app_provider.dart';
@@ -24,4 +27,7 @@ void main() async {
       child: const MyApp(),
     ),
   );
+  await 0.delay();
+
+  Provider.of<AuthProvider>(Get.context!, listen: false).user;
 }

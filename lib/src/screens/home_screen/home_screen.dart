@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kurd_store/src/constants/assets.dart';
@@ -26,6 +27,15 @@ class HomeScreen extends StatefulWidget {
 GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    2.delay(() async {
+      var ss = await FirebaseMessaging.instance.requestPermission();
+      print(ss);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
